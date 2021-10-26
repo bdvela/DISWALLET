@@ -36,7 +36,7 @@
           </v-list-item>
           </router-link>
 
-          <router-link to='./discount'>
+          <router-link to='./bills'>
           <v-list-item>
             <v-list-item-title>Descuento de Facturas</v-list-item-title>
             <v-list-item-icon>
