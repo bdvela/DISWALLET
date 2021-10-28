@@ -1,219 +1,50 @@
 <template>
-    <div class="register">
-    <div id="inciofoto" >
-      <v-img src="@/assets/img_login.jpg" alt="wallapper-finanzas"></v-img>
-    </div>
-    <div id="registro" class="wrapper fadeInDown">
-      <div  id="formContent">
-
-        <h2 >DISWALLET</h2>
-        <v-form class="form-login" v-on:submit.prevent="login">
-          <v-text-field filled rounded dense type="email" id="email" class="fadeIn second field-login" placeholder="Email" v-model="email"></v-text-field>
-          <v-text-field filled rounded dense type="password" id="password" class="fadeIn second field-login" placeholder="Password" v-model="password"></v-text-field>
-          <router-link to='./home'>
-            <input type="submit" class="fadeIn fourth" value="Iniciar Sesión">
-          </router-link>
-        </v-form>
-      </div>
-    </div>
-  </div>    
+  <v-app>
+    <v-row align="center">
+      <v-col cols="8">
+        <v-img class="iniciofoto" src="../assets/img_login.jpg" height="100%" ></v-img>
+      </v-col>
+      <v-col>
+        <v-card class="justify-center text-center card-login rounded-card" rounded="xl" elevation="12">
+          <v-card-title class="justify-center text-center"> 
+            <h1 class="display-2">DISWALLET</h1>
+          </v-card-title>
+          <v-card-content>
+            <v-form class="mt-12 field-login">
+              <v-text-field filled rounded dense label="Email" name="Email" type="text" color="primary accent-3"/>
+              <v-text-field filled rounded dense id="password" label="Password" name="password" type="password" color="primary accent-3"/>
+            </v-form>
+          </v-card-content>
+          <v-card-actions class="justify-center text-center">
+          <div class="text-center mt-2">
+            <router-link to="./home"><v-btn rounded x-large color="primary">Iniciar Sesión</v-btn></router-link>
+            <p class="text-center mt-6">Aún no tienes una cuenta? <router-link to="./Register.vue">regístrate ahora</router-link></p>
+          </div>
+          </v-card-actions>
+        </v-card> 
+      </v-col>
+    </v-row>
+  </v-app>
 </template>
 
 <script>
 export default {
   name: 'Login',
-  data:function () {
-    return {
-      email: "",
-      password: "",
-      error: false,
-      error_msg: "",
-    }
-  }
+
 }
 </script>
 
 <style scoped>
 
-#registro {
-    position: absolute;
-    float:right;
-    align-items: flex-end;
-    padding: 10%;
-}
-#inciofoto {
-  position: fixed;
+.iniciofoto{
+  position:fixed;
   left: 0px;
   top: 0px;
 }
 
-
-h2 {
-    text-align: center;
-    font-size: 40px;
-    font-weight: 400;
-    text-transform: uppercase;
-    display:inline-block;
-    margin: 40px 8px 10px 8px;
-    color: #000000;
-}
-/* STRUCTURE */
-.wrapper {
-    
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  min-height: 100%;
-}
-#formContent {
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 450px;
-  position: relative;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+.card-login{
   text-align: center;
-    padding: 50px;
+  padding: 10%;
 }
 
-/* TABS */
-h2.inactive {
-  color: #000000;
-}
-h2.active {
-  color: #0d0d0d;
-  border-bottom: 2px solid #7146ed;
-}
-/* FORM TYPOGRAPHY*/
-input[type=button], input[type=submit], input[type=reset]  {
-  background-color: #7146ed;
-  border: none;
-  color: white;
-  padding: 15px 80px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  text-transform: uppercase;
-  font-size: 13px;
-  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-  margin: 5px 20px 40px 20px;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -ms-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-}
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-  background-color: #252425;
-}
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
-  -moz-transform: scale(0.95);
-  -webkit-transform: scale(0.95);
-  -o-transform: scale(0.95);
-  -ms-transform: scale(0.95);
-  transform: scale(0.95);
-}
-
-/* ANIMATIONS */
-/* Simple CSS3 Fade-in-down Animation */
-.fadeInDown {
-  -webkit-animation-name: fadeInDown;
-  animation-name: fadeInDown;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-@-webkit-keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: none;
-    transform: none;
-  }
-}
-@keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: none;
-    transform: none;
-  }
-}
-/* Simple CSS3 Fade-in Animation */
-@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-.fadeIn {
-  opacity:0;
-  -webkit-animation:fadeIn ease-in 1;
-  -moz-animation:fadeIn ease-in 1;
-  animation:fadeIn ease-in 1;
-  -webkit-animation-fill-mode:forwards;
-  -moz-animation-fill-mode:forwards;
-  animation-fill-mode:forwards;
-  -webkit-animation-duration:1s;
-  -moz-animation-duration:1s;
-  animation-duration:1s;
-}
-.fadeIn.first {
-  -webkit-animation-delay: 0.4s;
-  -moz-animation-delay: 0.4s;
-  animation-delay: 0.4s;
-}
-.fadeIn.second {
-  -webkit-animation-delay: 0.6s;
-  -moz-animation-delay: 0.6s;
-  animation-delay: 0.6s;
-}
-.fadeIn.third {
-  -webkit-animation-delay: 0.8s;
-  -moz-animation-delay: 0.8s;
-  animation-delay: 0.8s;
-}
-.fadeIn.fourth {
-  -webkit-animation-delay: 1s;
-  -moz-animation-delay: 1s;
-  animation-delay: 1s;
-}
-/* Simple CSS3 Fade-in Animation */
-.underlineHover:after {
-  display: block;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: #56baed;
-  content: "";
-  transition: width 0.2s;
-}
-.underlineHover:hover {
-  color: #0d0d0d;
-}
-.underlineHover:hover:after{
-  width: 100%;
-}
-/* OTHERS */
-*:focus {
-  outline: none;
-}
-#icon {
-  width:60%;
-}
 </style>

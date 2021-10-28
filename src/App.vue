@@ -21,11 +21,11 @@ export default {
 
 <style>
  #app{
-    color: blueviolet;
+    color: #7146ED;
   }
  
 span{
-  color: blueviolet;
+  color: #7146ED;
   font-weight: bolder;
 }
 

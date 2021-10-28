@@ -2,7 +2,7 @@
   <div> 
     <Navbar></Navbar>
     <v-parallax src="../assets/home_wallpaper.jpg"></v-parallax>
-    <v-card shaped elevation="5" class="mx-auto my-12"  max-width="400">
+    <v-card  rounded="xl" elevation="12" class="mx-auto my-12"  max-width="400">
       <v-card-title class="justify-center c-text"><h3> Descuento de <span>Facturas</span></h3></v-card-title>
       <v-card-text><v-img class="fact" src="../assets/facturas.png" max-width="150"></v-img></v-card-text>
       <v-card-actions class="justify-center c-text">
