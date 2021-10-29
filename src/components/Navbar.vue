@@ -2,7 +2,7 @@
     <v-card class="mx-auto overflow-hidden" >
       <v-app-bar app light fixed>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title><span>Diswallet</span></v-toolbar-title>
+        <v-toolbar-title><span>{{menu}}</span></v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-list-item>Hola {{usuario}}!</v-list-item>
@@ -74,7 +74,8 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
-    usuario: 'Peter'
+    usuario: 'Peter',
+    menu: 'Diswallet'
   }),
 
 };

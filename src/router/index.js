@@ -18,7 +18,23 @@ const routes = [
     path: '/bills',
     name: 'Bills',
     component: () => import('../views/Bills.vue')
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Register.vue')
+  },
+  {
+    path: '/myaccount',
+    name: 'MyAccount',
+    component: () => import('../views/MyAccount.vue')
+  },
+  {
+    path: '/successregister',
+    name: 'SuccessRegister',
+    component: () => import('../views/SuccessRegister.vue')
   }
+
 ]
 
 const router = new VueRouter({
