@@ -2,7 +2,7 @@
     <v-app>
         <v-row align="center justify-center">
              <v-col cols="auto" align-self="center">
-            <v-card class="register-card">
+            <v-card class="register-card" rounded="xl" elevation="12">
                 <v-card-title class="justify-center">
                     <h1>REGISTRO</h1>
                 </v-card-title>

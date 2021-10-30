@@ -1,15 +1,21 @@
 <template>
   <div> 
     <Navbar></Navbar>
+    <v-card>
     <v-parallax >
-      <v-carousel hide-delimiters>  
-        <v-carousel-item
+      <v-carousel  hide-delimiters>  
+        
+        <v-carousel-item 
           v-for="(item,i) in items"
           :key="i"
           :src="item.src"
-        ></v-carousel-item>
+        >
+        <v-card-title class="parallax-car">
+          <p><span class="header-title">Somos Diswallet</span> <br> <br> tu aliado en las finanzas.</p>
+        </v-card-title></v-carousel-item>
       </v-carousel>
     </v-parallax>
+    </v-card>
     <v-card  rounded="xl" elevation="12" class="mx-auto my-12"  max-width="400">
       <v-card-title class="justify-center c-text"><h3> Descuento de <span>Facturas</span></h3></v-card-title>
       <v-card-text><v-img class="fact" src="../assets/facturas.png" max-width="150"></v-img></v-card-text>
@@ -17,6 +23,7 @@
         <router-link to="./bills"><v-btn color="primary" rounded>Continuar</v-btn></router-link>
       </v-card-actions>
     </v-card>
+
   </div>
 </template>
 
@@ -50,6 +57,29 @@ import Navbar from '../components/Navbar.vue'
 </script>
 
 <style scoped>
+
+.header-title{
+  color: white;
+  font-size: 58px;
+}
+
+.parallax-car{
+    background-image: 
+    linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    );
+  width: 100%;
+  height: 100%;
+  opacity: .7;
+  position: absolute; 
+  font-size: 40px;
+  z-index: 10;
+  padding-top: 60px;
+  padding-left: 60px;
+  align-content: flex-start;
+  color: white;
+}
 
 .fact{
   margin:auto;
