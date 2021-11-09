@@ -4,16 +4,17 @@
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title><span>{{menu}}</span></v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-list-item>Hola {{usuario}}!</v-list-item>
-          <v-list-item>
+        <template>
+            <div class="item-menu">Hola {{user.displayName}}!</div>
+        </template>
+        
+        <div class="item-menu">
              <router-link to='./myaccount'>
             <v-avatar color="primary">
               <v-icon dark>mdi-account</v-icon>
             </v-avatar>
              </router-link>
-          </v-list-item>
-        </v-toolbar-items>
+        </div>
     </v-app-bar>
     <v-navigation-drawer app v-model="drawer" temporary>
       <v-list nav dense>
@@ -54,14 +55,13 @@
           </v-list-item>
           </router-link>
           
-          <router-link to='./login'>
-          <v-list-item>
+          <v-list-item @click.prevent="logout">
             <v-list-item-title>Cerrar Sesión</v-list-item-title>
             <v-list-item-icon>
               <v-icon>mdi-logout</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          </router-link>
+
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -69,14 +69,32 @@
 </template>
 
 <script>
+import '../firebase/init'
+import firebase from 'firebase/compat/app'
 export default {
   name: 'Navbar',
   data: () => ({
     drawer: false,
     group: null,
-    usuario: 'Peter',
+    user: null,
     menu: 'Diswallet'
   }),
+  methods: {
+    logout () {
+      firebase.auth().signOut().then(() => {
+        this.$router.push({name: 'Login'})
+      })
+    }
+  },
+  created () {
+    firebase.auth().onAuthStateChanged(user => {
+      if(user) {
+        this.user = user
+      } else{
+        this.user = null
+      }
+    })
+  }
 
 };
 </script>
@@ -85,6 +103,10 @@ export default {
 
 a {  
   text-decoration: none;
+}
+
+.item-menu{
+  padding: 2%;  
 }
 
 </style>

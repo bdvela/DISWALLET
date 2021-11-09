@@ -49,6 +49,9 @@
 </template>
 
 <script>
+import '../firebase/init'
+import firebase from 'firebase/compat/app'
+
 export default ({
     data () {
         return {
@@ -63,13 +66,32 @@ export default ({
     name: 'Register',
     methods: {
         register () {
+            this.error = ''
             if (this.ruc && this.nombres && this.email && this.celular && this.contraseña) {
-                //
-            } 
-            else {
+                firebase.auth().createUserWithEmailAndPassword(this.email, this.contraseña)
+                .then(user => {
+                    //Actualizar usuario
+                    if(user) {
+                        user.user.updateProfile({
+                            displayName: this.nombres
+                        }).then(() => {
+                            this.ruc = ''
+                            this.nombres = ''
+                            this.email = ''
+                            this.celular= ''
+                            this.contraseña=''
+                            this.$router.push({name: 'SuccessRegister'})
+                        }).catch((err) => {
+                            this.error = err.message
+                        })
+                    }
+                }).catch(err => {
+                    this.error = err.message
+                })
+            } else {
                 this.error = 'Todos los campos son requeridos.'
             }
-        },      
+        }      
     }
 })
 </script>
