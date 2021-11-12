@@ -2,6 +2,7 @@
     <div>
         <Navbar></Navbar>
         <v-card class="bills-card" elevation="4" rounded="xl">
+            
             <v-card-title>
                 <h2>Mis Facturas</h2> 
             <v-spacer></v-spacer>
@@ -17,6 +18,7 @@
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
+            
             <v-text-field
             v-model="search"
             append-icon="mdi-magnify"
@@ -25,9 +27,10 @@
             hide-details
             ></v-text-field>           
              <v-spacer></v-spacer>
-
+            
                     <!--DIALOG ADD BILLS-->
             <v-row justify="center">
+                
             <v-dialog
             v-model="dialog"
             max-width="100vh"
@@ -42,10 +45,14 @@
                 <v-icon>mdi-plus</v-icon>
                 </v-btn>
             </template>
+            
             <v-card class="card-dialog" rounded="xl" elevation="12">
                 <v-card-title class="justify-center">
                     <span class="text-h3 formtitle">NUEVA FACTURA</span>
                 </v-card-title>
+                <v-alert v-if="error" color="red" type="error" >
+                {{error}}
+                </v-alert>
                 <div class="switch-toggle">
                     <v-subheader class="PEN">PEN</v-subheader>
                     <v-switch
@@ -189,11 +196,12 @@ export default {
                 { text: 'TCEA (%)', value: 'TCEA' },
             ],
             items: [],
-            id: 1,
+            error: '',
             editedIndex: -1,
             dialog: false,
             newBill: {
                 id: '',
+                ruc: '',
                 empresa: '',
                 emision: '',
                 fechapago: '',
@@ -224,9 +232,15 @@ export default {
             })
         },
         addBill() {
-            billsRef.push(this.newBill);
-            this.items.push(this.newBill);
-            this.close()
+            this.error = ''
+            if(this.newBill.ruc && this.newBill.empresa && this.newBill.emision && this.newBill.fechapago && this.newBill.monto){
+                 billsRef.push(this.newBill);
+                this.items.push(this.newBill);
+                this.close()
+            } else {
+                this.error = 'Todos los campos son requeridos.'
+            }
+           
            
         }
     }
