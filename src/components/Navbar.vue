@@ -2,10 +2,10 @@
     <v-card class="mx-auto overflow-hidden" >
       <v-app-bar app light fixed>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title><span>{{menu}}</span></v-toolbar-title>
+        <v-toolbar-title> <router-link to='./'><span>Diswallet</span></router-link></v-toolbar-title>
         <v-spacer></v-spacer>
         <template>
-            <div class="item-menu">Hola {{user.displayName}}!</div>
+            <div class="item-menu">Hola {{user.displayName || user.email}}!</div>
         </template>
         
         <div class="item-menu">
@@ -28,7 +28,7 @@
             </v-list-item>
             <br>
              <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
-          <router-link to='./home'>
+          <router-link to='./'>
           <v-list-item>
             <v-list-item-title>Inicio</v-list-item-title>
             <v-list-item-icon>

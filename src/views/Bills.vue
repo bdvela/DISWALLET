@@ -26,7 +26,8 @@
             ></v-text-field>           
              <v-spacer></v-spacer>
 
-
+                    <!--DIALOG ADD BILLS-->
+            <v-row justify="center">
             <v-dialog
             v-model="dialog"
             max-width="100vh"
@@ -41,10 +42,9 @@
                 <v-icon>mdi-plus</v-icon>
                 </v-btn>
             </template>
-            
             <v-card class="card-dialog" rounded="xl" elevation="12">
                 <v-card-title class="justify-center">
-                    <span class="text-h3 formtitle">{{ formTitle }}</span>
+                    <span class="text-h3 formtitle">NUEVA FACTURA</span>
                 </v-card-title>
                 <div class="switch-toggle">
                     <v-subheader class="PEN">PEN</v-subheader>
@@ -54,24 +54,22 @@
                     class="mt-2 "
                     ></v-switch>  
                 </div>
-                
                 <v-card-text> 
-                    <v-form class="mt-12">
+                    <v-form class="mt-12" @submit.prevent="addBill">
                     <v-container class="container-forms">
                         <v-row >
                             <v-col class="col-register"
                             cols="12"
                             sm="6"
-                          
                             >
                             <v-subheader>RUC</v-subheader> 
-                                <v-text-field
-                                v-model="editedItem.ruc"
+                                <v-text-field 
+                                v-model="newBill.ruc"
                                 placeholder="RUC"
                                 autofocus
                                 filled
                                 rounded
-                                ></v-text-field>
+                                required></v-text-field>
                             </v-col>
                             <v-col class="col-register"
                             cols="12"
@@ -80,7 +78,7 @@
                             >
                             <v-subheader>Razón Social</v-subheader> 
                                 <v-text-field
-                                v-model="editedItem.empresa"
+                                v-model="newBill.empresa"
                                 placeholder="razón social"
                                 filled
                                 rounded
@@ -93,7 +91,7 @@
                             >
                             <v-subheader>Fecha de emisión</v-subheader> 
                                 <v-text-field
-                                v-model="editedItem.emision"
+                                v-model="newBill.emision"
                                 placeholder="dd/mm/aaaa"
                                 type="date"
                                 filled
@@ -108,7 +106,7 @@
                             >
                             <v-subheader>Fecha de pago</v-subheader> 
                                 <v-text-field
-                                v-model="editedItem.fechapago"
+                                v-model="newBill.fechapago"
                                 placeholder="dd/mm/aaaa"
                                 type="date"
                                 filled
@@ -122,7 +120,7 @@
                             >
                             <v-subheader>Monto Total</v-subheader> 
                                 <v-text-field
-                                v-model="editedItem.monto"
+                                v-model="newBill.monto"
                                 placeholder="0.00"
                                 type="number"
                                 filled
@@ -130,27 +128,26 @@
                                 ></v-text-field>
                             </v-col>                 
                         </v-row>
+                         <div class="text-center mt-2 ">
+                            <v-btn 
+                            color="primary"
+                            rounded
+                            x-large
+                            type="submit"
+                            >Registrar Factura</v-btn>
+                         </div>
                     </v-container>
                     </v-form>
                 </v-card-text>
-                <v-card-actions class="justify-center">
-                    <v-btn 
-                    color="primary"
-                    rounded
-                    x-large
-                    @click="save"
-                    >Registrar Factura</v-btn>
-                </v-card-actions>
             </v-card>
             </v-dialog>
+            </v-row>
 
-
-             
             </v-card-title>
             <v-divider light ></v-divider>
-            <v-data-table
+             <v-data-table
             :headers="headers"
-            :items="id"
+            :items="items"
             :search="search"
             hide-default-footer
             >
@@ -161,136 +158,78 @@
 </template>
 
 <script>
+import firebase from 'firebase/compat/app'
 import Navbar from '../components/Navbar.vue'
 
+let db = firebase.database()
+let billsRef = db.ref('bills')
+
 export default {
+    name: 'Bills',
     components: {
         Navbar
     },
-    data: () => ({
-        search: '',
-        dialog: false,
-        dialogDelete: false,
-        headers: [
+
+    firebase: {
+        bills: billsRef                                                             
+    },
+    data () {
+        return {
+            search: '',
+            headers: [
                 {
                     text: 'ID',
                     align: 'start',
                     value: 'id',
                 },
-                { text: 'Fecha de emisión', value: 'emision'},
                 { text: 'Nombre de la empresa', value: 'empresa' },
-                { text: 'Monto', value: 'monto' },
+                { text: 'Fecha de emisión', value: 'emision'},
                 { text: 'Fecha de pago', value: 'fechapago' },
+                { text: 'Monto', value: 'monto' },
                 { text: 'TCEA (%)', value: 'TCEA' },
-        ],
-        id: [],
-        editedIndex: -1,
-        editedItem: {
-            id: 0,
-            emision: '',
-            empresa: '',
-            monto: '',
-            fechapago: '',
-        },
-        defaultItem: {
-            id: 0,
-            emision: '',
-            empresa: '',
-            monto: '',
-            fechapago: '',
-        },
-    }),
-    computed: {
-        formTitle () {
-            return this.editedIndex === -1 ? 'NUEVA FACTURA' : 'Editar Factura'
-        },
+            ],
+            items: [],
+            id: 1,
+            editedIndex: -1,
+            dialog: false,
+            newBill: {
+                id: '',
+                empresa: '',
+                emision: '',
+                fechapago: '',
+                monto: '',
+                tcea: ''
+            },         
+        }
     },
-
-    watch: {
-        dialog (val) {
-            val || this.close()
-        },
-        dialogDelete (val) {
-            val || this.CloseDelete()
-        },
-    },
-    
-    created () {
+    created(){
         this.initialize()
     },
 
     methods: {
-        initialize (){
-            this.id = [
-                {
-                    id: '1',
-                    emision: '24/09/2021',
-                    empresa: 'UPC',
-                    monto: 'S/6500',
-                    fechapago: '24/12/2021',
-                    TCEA: '95.55%',
-                },
-                {
-                    id: '2',
-                    emision: 237,
-                    empresa: 9.0,
-                    monto: 37,
-                    fechapago: 4.3,
-                    TCEA: '1%',
-                },
-                {
-                    id: '3',
-                    emision: 518,
-                    empresa: 26.0,
-                    monto: 65,
-                    fechapago: 7,
-                    TCEA: '6%',
-                },
-            ]
+        initialize: function(){
+            billsRef
+            .get()
+            .then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    const bill = doc.val()
+                    this.items.push(bill)
+                })
+        })
         },
-        
-        editedItem (item) {
-            this.editedItem = this.id.indexOf(item)
-            this.editedItem = Object.assign({}, item)
-            this.dialog = true
-        },
-
-        deleteItem (item) {
-            this.editedIndex = this.id.indexOf(item)
-            this.editedItem = Object.assign({}, item)
-            this.dialogDelete = true
-        },
-
-        deleteItemConfirm () {
-            this.id.splice(this.editedIndex, 1)
-            this.CloseDelete()
-        },
-
         close () {
-            this.dialog = false
-            this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem)
-                this.editedIndex = -1
+            this.dialog=false
+             this.$nextTick(() => {
+                this.newBill = Object.assign({})
             })
         },
-
-        CloseDelete () {
-            this.dialogDelete = false
-            this.$$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem)
-                this.editedIndex = -1
-            })
-        },
-
-        save () {
-            if (this.editedIndex > -1) {
-                Object.assign(this.id[this.editedIndex], this.editedItem)
-            } else {
-                this.id.push(this.editedItem)
-            }
+        addBill() {
+            billsRef.push(this.newBill);
+            this.items.push(this.newBill);
             this.close()
-        },
-    },
+           
+        }
+    }
 }
 </script>
 

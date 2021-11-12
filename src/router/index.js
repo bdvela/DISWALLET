@@ -10,7 +10,7 @@ const routes = [
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/home',
+    path: '/',
     name: 'Home',
     component: () => import('../views/Home.vue'),
     meta: {
@@ -20,7 +20,10 @@ const routes = [
   {
     path: '/bills',
     name: 'Bills',
-    component: () => import('../views/Bills.vue')
+    component: () => import('../views/Bills.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/register',
@@ -30,12 +33,18 @@ const routes = [
   {
     path: '/myaccount',
     name: 'MyAccount',
-    component: () => import('../views/MyAccount.vue')
+    component: () => import('../views/MyAccount.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/successregister',
     name: 'SuccessRegister',
-    component: () => import('../views/SuccessRegister.vue')
+    component: () => import('../views/SuccessRegister.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 
 ]
