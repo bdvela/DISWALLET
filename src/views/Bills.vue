@@ -170,7 +170,6 @@ import Navbar from '../components/Navbar.vue'
 
 let db = firebase.database()
 let billsRef = db.ref('bills')
-
 export default {
     name: 'Bills',
     components: {
@@ -193,19 +192,22 @@ export default {
                 { text: 'Fecha de emisión', value: 'emision'},
                 { text: 'Fecha de pago', value: 'fechapago' },
                 { text: 'Monto', value: 'monto' },
+                { text: 'DIVISA', value: 'kindOfMoney'},
                 { text: 'TCEA (%)', value: 'TCEA' },
             ],
             items: [],
+            id: 0,
             error: '',
             editedIndex: -1,
             dialog: false,
             newBill: {
-                id: '',
+                id: 0,
                 ruc: '',
                 empresa: '',
                 emision: '',
                 fechapago: '',
                 monto: '',
+                kindOfMoney: '',
                 tcea: ''
             },         
         }
@@ -213,6 +215,7 @@ export default {
     created(){
         this.initialize()
     },
+
 
     methods: {
         initialize: function(){
@@ -222,6 +225,7 @@ export default {
                 snapshot.forEach((doc) => {
                     const bill = doc.val()
                     this.items.push(bill)
+                    this.id = bill.id
                 })
         })
         },
@@ -234,7 +238,19 @@ export default {
         addBill() {
             this.error = ''
             if(this.newBill.ruc && this.newBill.empresa && this.newBill.emision && this.newBill.fechapago && this.newBill.monto){
-                 billsRef.push(this.newBill);
+                 if(this.kindOfMoney == 1){
+                    this.newBill.kindOfMoney = 'USD'
+                 }
+                 else{
+                     this.newBill.kindOfMoney = 'PEN'
+                 }
+
+                //ACTUALIZAR ID 
+                this.newBill.id = this.id+1
+                this.id = this.id+1
+
+
+                billsRef.push(this.newBill);
                 this.items.push(this.newBill);
                 this.close()
             } else {
