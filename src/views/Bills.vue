@@ -1,7 +1,7 @@
 <template>
     <div>
         <Navbar></Navbar>
-        <v-card class="bills-card" elevation="4" rounded="xl">
+        <v-card class="bills-card" elevation="4" rounded="xl" >
             
             <v-card-title>
                 <h2>Mis Facturas</h2> 
@@ -152,12 +152,22 @@
 
             </v-card-title>
             <v-divider light ></v-divider>
-             <v-data-table
+            <v-data-table
             :headers="headers"
             :items="items"
             :search="search"
             hide-default-footer
+            items-per-page="50"
             >
+            <template #item.tcea="{item}">
+                <div v-if="item.tcea == 0">
+                <v-btn rounded small color="primary"
+                >Calcular</v-btn>
+                </div>
+                <div v-else>
+                    {{item.tcea}}
+                </div>
+            </template>
             </v-data-table>
         </v-card>
         
@@ -193,10 +203,11 @@ export default {
                 { text: 'Fecha de pago', value: 'fechapago' },
                 { text: 'Monto', value: 'monto' },
                 { text: 'DIVISA', value: 'kindOfMoney'},
-                { text: 'TCEA (%)', value: 'TCEA' },
+                { text: 'TCEA (%)', value: 'tcea', sortable: false },
             ],
             items: [],
             id: 0,
+            notcea: 0,
             error: '',
             editedIndex: -1,
             dialog: false,
@@ -208,16 +219,18 @@ export default {
                 fechapago: '',
                 monto: '',
                 kindOfMoney: '',
-                tcea: ''
+                tcea: 0
             },         
         }
     },
     created(){
         this.initialize()
     },
+    
 
 
     methods: {
+        
         initialize: function(){
             billsRef
             .get()
@@ -225,10 +238,22 @@ export default {
                 snapshot.forEach((doc) => {
                     const bill = doc.val()
                     this.items.push(bill)
+                    this.tcea = bill.tcea
                     this.id = bill.id
+                    console.log(this.tcea)
                 })
         })
         },
+
+        HaveTcea(tcea){
+            if(tcea == 0){
+                return 1
+            }
+            else{
+                return 0
+            }
+        },
+
         close () {
             this.dialog=false
              this.$nextTick(() => {
@@ -248,7 +273,9 @@ export default {
                 //ACTUALIZAR ID 
                 this.newBill.id = this.id+1
                 this.id = this.id+1
-
+                
+                //TCEA = 0 PARA QUE APAREZCA EL BOTÓN CALCULAR
+                this.newBill.tcea = 0
 
                 billsRef.push(this.newBill);
                 this.items.push(this.newBill);
