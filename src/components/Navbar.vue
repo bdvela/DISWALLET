@@ -5,7 +5,7 @@
         <v-toolbar-title> <router-link to='./'><span>Diswallet</span></router-link></v-toolbar-title>
         <v-spacer></v-spacer>
         <template>
-            <div class="item-menu">Hola {{user.displayName || user.email}}!</div>
+            <div class="item-menu">Hola {{user.displayName || user.email}} !</div>
         </template>
         
         <div class="item-menu">
