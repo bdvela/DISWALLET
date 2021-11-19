@@ -16,6 +16,9 @@
       </v-carousel>
     </v-parallax>
     </v-card>
+    <v-container>
+    <v-row>
+    <v-col md="4">
     <v-card  rounded="xl" elevation="12" class="mx-auto my-12"  max-width="400">
       <v-card-title class="justify-center c-text"><h3> Descuento de <span>Facturas</span></h3></v-card-title>
       <v-card-text><v-img class="fact" src="../assets/facturas.png" max-width="150"></v-img></v-card-text>
@@ -23,7 +26,29 @@
         <router-link to="./bills"><v-btn color="primary" rounded>Continuar</v-btn></router-link>
       </v-card-actions>
     </v-card>
+    </v-col>
+      
+    <v-col md="4">
+    <v-card disabled rounded="xl" elevation="12" class="mx-auto my-12"  max-width="400">
+      <v-card-title class="justify-center c-text"><h3> Descuento de <span>Letras</span></h3></v-card-title>
+      <v-card-text><v-img class="fact" src="../assets/letras.png" max-width="150"></v-img></v-card-text>
+      <v-card-actions class="justify-center c-text">
+        <router-link to="./letters"><v-btn  color="primary" rounded>Continuar</v-btn></router-link>
+      </v-card-actions>
+    </v-card>
+    </v-col>
 
+    <v-col md="4">
+    <v-card disabled rounded="xl" elevation="12" class="mx-auto my-12"  max-width="400">
+      <v-card-title class="justify-center c-text"><h3> Descuento de <span>Recibos</span></h3></v-card-title>
+      <v-card-text><v-img class="fact" src="../assets/recibos.png" max-width="150"></v-img></v-card-text>
+      <v-card-actions class="justify-center c-text">
+        <router-link to="./receipts"><v-btn  color="primary" rounded>Continuar</v-btn></router-link>
+      </v-card-actions>
+    </v-card>
+    </v-col>
+  </v-row>
+  </v-container>
   </div>
 </template>
 

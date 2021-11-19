@@ -172,7 +172,7 @@
                 {{error}}
                 </v-alert>
                 <v-card-text> 
-                    <v-form class="mt-12" @submit="showTCEA">
+                    <v-form class="mt-12" @submit.prevent="showTCEA">
                     <v-container class="container-forms">
                         <v-row >
                             
@@ -218,6 +218,7 @@
                                 outlined
                                 disabled
                                 filled
+                                type="date"
                                 rounded
                                 required></v-text-field>
                             </v-col>
@@ -261,6 +262,7 @@
                                 outlined
                                 disabled
                                 filled
+                                type="date"
                                 rounded
                                 required></v-text-field>
                             </v-col>
@@ -478,8 +480,8 @@ export default {
             },   
             // V-SELECT TCEA
             days: [
-                '360 días',
-                '365 días'
+                360,
+                365
             ], 
             plazo: [
                 'Diario',
@@ -599,47 +601,57 @@ export default {
            this.dialog2 = true
         },
 
-
         calculateTCEA: function(monto, dias, fechapago, tasa, fechadescuento, cgi, cgf){
-
-            //Total facturado
+            console.log("monto: ", monto);
+            console.log("dias: ", dias);
+            console.log("fechapago: ", fechapago);
+            console.log("tasa: ", tasa);
+            console.log("fechadescuento: ", fechadescuento);
+            console.log("cgi: ", cgi);
+            console.log("cgf: ", cgf);
             let tf = parseFloat(monto)
+            
+            let diasAnio = parseFloat(dias)
 
-            //Dias por año
-            let diasporaño = parseInt(dias)
+            let fechPago = moment(fechapago, "YYYY/MM/DD")
+            console.log("fechapago: ", fechPago);
+            let fechaDesc = moment(fechadescuento, "YYYY/MM/DD")
 
-            //Numero de dias
-            let fechadepago = moment(fechapago, "YYYY/MM/DD")
-            let fechadedescuento = moment(fechadescuento, "YYYY/MM/DD")
-            let fechaDiff = parseInt(fechadepago.diff(fechadedescuento, "days"))
-            let numDias = parseInt(fechaDiff)
+            console.log("fechapago: ", fechaDesc);
+            let fechaDiff = parseInt(fechPago.diff(fechaDesc, "days"))
+            console.log("fechaDiff: ", fechaDiff);
 
-            let te = Math.pow(1 + parseFloat(tasa) / 100, numDias / diasporaño) - 1;
-            let td = te / (1+te)
+            let numDias = fechaDiff
 
-            //Descuento
-            let descuento = parseFloat(Math.round(td * tf * 100) / 100)
+            let te = parseFloat(Math.pow(1+parseFloat(tasa)/100, numDias / diasAnio) -1)
 
-            //Total costo inicial
-            let tci = cgi
+            let td = te / (1 + te)
 
-            //Total costo final
-            let tcf = cgf
+            let desct = parseFloat(Math.round(td * tf * 100)/100)
 
-            //Valor neto
-            let vn = parseInt(monto) - descuento
+            let tci = parseFloat(cgi)
 
-            //Valor recibido
-            let vr = vn - tci
+            let tcf = parseFloat(cgf)
 
-            //Valor entregado
-            let ve = vn + tcf
+            console.log("Valor nominal: ", parseInt(monto));
+            console.log("desct: ", desct);
+            console.log("tci: ", tci)
+            console.log("tcf: ", tcf)
 
-            // TCEA
-            let tcea = Math.pow(ve/vr, diasporaño / numDias) -1
-            return tcea
+            let vn = parseInt(monto) - desct
+            console.log("vn: ", vn);
+
+            let vr = vn -tci
+            console.log("vr: ", vr);
+
+            let ve = parseFloat(monto) + tcf
+            console.log("ve: ", ve);
+
+            let tcea = Math.pow(ve / vr, diasAnio / numDias) - 1;
+            console.log("tcea: ", tcea*100)
+            return tcea*100
         },
-
+        
         showTCEA(){
             this.error = ''
                 

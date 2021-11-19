@@ -23,11 +23,11 @@
                 Menu
               </v-layout>
             <v-layout column align-end>
-              <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+              <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             </v-layout>
             </v-list-item>
             <br>
-             <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
+        <v-list-item-group active-class="deep-purple--text text--accent-4">
           <router-link to='./'>
           <v-list-item>
             <v-list-item-title>Inicio</v-list-item-title>
@@ -45,6 +45,20 @@
             </v-list-item-icon>
           </v-list-item>
           </router-link>
+
+          <v-list-item disabled>
+            <v-list-item-title>Descuento de Letras</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon disabled>mdi-currency-usd</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+          
+          <v-list-item disabled>
+            <v-list-item-title>Descuento de Recibos</v-list-item-title>
+            <v-list-item-icon>
+              <v-icon disabled>mdi-currency-usd</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
 
           <router-link to='./myaccount'>
           <v-list-item>
