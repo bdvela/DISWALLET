@@ -37,28 +37,34 @@
           </v-list-item>
           </router-link>
 
-          <router-link to='./bills'>
-          <v-list-item>
-            <v-list-item-title>Descuento de Facturas</v-list-item-title>
-            <v-list-item-icon>
-              <v-icon>mdi-currency-usd</v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-          </router-link>
+          <v-list-group no-action >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>Descuentos</v-list-item-title>
+              </v-list-item-content>
+            </template>
 
-          <v-list-item disabled>
-            <v-list-item-title>Descuento de Letras</v-list-item-title>
-            <v-list-item-icon>
-              <v-icon disabled>mdi-currency-usd</v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-          
-          <v-list-item disabled>
-            <v-list-item-title>Descuento de Recibos</v-list-item-title>
-            <v-list-item-icon>
-              <v-icon disabled>mdi-currency-usd</v-icon>
-            </v-list-item-icon>
-          </v-list-item>
+              <v-list-item to="./bills">
+                <v-list-item-title>Dscto. de Facturas</v-list-item-title>
+                <v-list-item-icon>
+                  <v-icon>mdi-cash-fast</v-icon>
+                </v-list-item-icon>
+              </v-list-item>
+            
+              <v-list-item disabled>
+                <v-list-item-title>Dscto. de Letras</v-list-item-title>
+                <v-list-item-icon>
+                  <v-icon>mdi-file-outline</v-icon>
+                </v-list-item-icon>
+              </v-list-item>
+
+              <v-list-item disabled>
+                <v-list-item-title>Dscto. de Recibos</v-list-item-title>
+                <v-list-item-icon>
+                  <v-icon>mdi-card-bulleted-outline</v-icon>
+                </v-list-item-icon>
+              </v-list-item>
+          </v-list-group>
 
           <router-link to='./myaccount'>
           <v-list-item>
@@ -122,5 +128,6 @@ a {
 .item-menu{
   padding: 2%;  
 }
+
 
 </style>
