@@ -172,7 +172,7 @@
                 {{error}}
                 </v-alert>
                 <v-card-text> 
-                    <v-form class="mt-12" @submit.prevent="showTCEA">
+                    <v-form class="mt-12" @submit="showTCEA">
                     <v-container class="container-forms">
                         <v-row >
                             
@@ -299,6 +299,19 @@
                                 filled
                                 rounded
                             ></v-text-field>
+                            </v-col>
+                            <v-col>
+                                <div v-if="newtcea.tipotasa == 'Nominal'">
+                                    <v-subheader>Periodo de Capitalización</v-subheader> 
+                                    <v-select
+                                    :items="capitalizacion"
+                                    v-model="newtcea.capitalizacion"
+                                    placeholder="per. de capitalización"
+                                    filled
+                                    rounded
+                                    required
+                                    ></v-select>
+                                </div>
                             </v-col>
                             </v-row>
                             </v-col> 
@@ -463,6 +476,7 @@ export default {
                 emision: '',
                 monto: '',
                 fechapago: '',
+                capitalizacion: '',
                 tcea: 0,
 
             },
@@ -502,6 +516,16 @@ export default {
                 'Seguro',
                 'Otros gastos'
             ],
+            capitalizacion: [
+                'Diario',
+                'Quincenal',
+                'Mensual',
+                'Bimestral',
+                'Trimestral',
+                'Cuatrimestral',
+                'Semestral',
+                'Anual'           
+            ]
         }
     },
     created(){
@@ -601,63 +625,128 @@ export default {
            this.dialog2 = true
         },
 
-        calculateTCEA: function(monto, dias, fechapago, tasa, fechadescuento, cgi, cgf){
-            console.log("monto: ", monto);
-            console.log("dias: ", dias);
-            console.log("fechapago: ", fechapago);
-            console.log("tasa: ", tasa);
-            console.log("fechadescuento: ", fechadescuento);
-            console.log("cgi: ", cgi);
-            console.log("cgf: ", cgf);
-            let tf = parseFloat(monto)
+        calculateTCEA: function(fechapago, fechadescuento, plazo, tasa, tipotasa,  capitalizacion, dias, monto, cgi, cgf){
+            console.log('Fecha de pago: ', fechapago);
+            console.log('Fecha de descuento: ', fechadescuento);
+            console.log('Plazo: ', plazo);
+            console.log('Tasa: ', tasa);
+            console.log('Tipo de tasa: ', tipotasa);
+            console.log('Capitalización: ', capitalizacion);
+            console.log('Días: ', dias);
+            console.log('Monto: ', monto);
+            console.log('CGI: ', cgi);
+            console.log('CGF: ', cgf);
+    
+            console.log("__________");
+            /* Dias por año */
+            let diasporaño = parseInt(dias)
+            console.log('diasporaño: ', dias);
+            /* Tiempo de Descuento */
+            let fechaPago = moment(fechapago, "YYYY/MM/DD")
+            let fechaDescuento = moment(fechadescuento, "YYYY/MM/DD")
+            let fechaDiferencia = parseInt(fechaPago.diff(fechaDescuento, "days"))
+            let td = fechaDiferencia //fechapago - fechadescuento;
+            console.log('fechaPago: ', fechaPago);
+            console.log('FechaDescuento: ', fechaDescuento);
+            console.log('Fecha Diferencia: ', fechaDiferencia);
+            console.log('td: ', td);
+
+            let cap = Number
+            switch (capitalizacion) {
+                case 'Mensual':
+                    cap = 1
+                    break
+                case 'Bimestral':
+                    cap = 2
+                    break
+                case 'Trimestral':
+                    cap = 3
+                    break
+                case 'Cuatrimestral':
+                    cap = 4
+                    break
+                case 'Semestral':
+                    cap = 6
+                    break
+                case 'Anual' :
+                    cap = 12
+                    break
+
+                default :
+                    cap = 12
+                    break
+            }
+            console.log('cap: ', cap);
             
-            let diasAnio = parseFloat(dias)
+            let plaz = Number
+            switch (plazo) {
+                case 'Mensual':
+                    plaz = 1
+                    break
+                case 'Bimestral':
+                    plaz = 2
+                    break
+                case 'Trimestral':
+                    plaz = 3
+                    break
+                case 'Cuatrimestral':
+                    plaz = 4
+                    break
+                case 'Semestral':
+                    plaz = 6
+                    break
+                case 'Anual' :
+                    plaz = 12
+                    break
 
-            let fechPago = moment(fechapago, "YYYY/MM/DD")
-            console.log("fechapago: ", fechPago);
-            let fechaDesc = moment(fechadescuento, "YYYY/MM/DD")
-
-            console.log("fechapago: ", fechaDesc);
-            let fechaDiff = parseInt(fechPago.diff(fechaDesc, "days"))
-            console.log("fechaDiff: ", fechaDiff);
-
-            let numDias = fechaDiff
-
-            let te = parseFloat(Math.pow(1+parseFloat(tasa)/100, numDias / diasAnio) -1)
-
-            let td = te / (1 + te)
-
-            let desct = parseFloat(Math.round(td * tf * 100)/100)
-
+                default :
+                    plaz = 12
+                    break
+            }
+            console.log('Plaz: ', plaz);
+            console.log("cap: ", cap)
+            /* Tasa Efectiva para un plazo */
+            let te = Number
+            if (tipotasa == 'Efectiva') {
+                //Para Tasa Efectiva
+                te = (Math.pow(1 + parseFloat(tasa)/100, (td / (plaz*30))) - 1);
+            }
+            else {
+                 te = (Math.pow(1 + (parseFloat(tasa)/100)/(plaz*30/(cap*30)), (td/(cap*30)))-1);
+            }
+            console.log('te: ', te);
+        
+            /* Descuento */
+            let tasadcto = (te) / (1+te)
+            let dcto = parseFloat(monto) * tasadcto
+            console.log('tasadcto: ', tasadcto);
+            /* Total costo inicial */
             let tci = parseFloat(cgi)
-
+            console.log('tci: ', tci);
+            /* Total costo final */
             let tcf = parseFloat(cgf)
-
-            console.log("Valor nominal: ", parseInt(monto));
-            console.log("desct: ", desct);
-            console.log("tci: ", tci)
-            console.log("tcf: ", tcf)
-
-            let vn = parseInt(monto) - desct
-            console.log("vn: ", vn);
-
-            let vr = vn -tci
-            console.log("vr: ", vr);
-
+            console.log('tcf: ', tcf);
+            /* Valor neto */
+            let vn = parseFloat(monto) - dcto
+            console.log('vn: ', vn);
+            /* Valor recibido */
+            let vr = vn - tci
+            console.log('vr: ', vr);
+            /* Valor entregado */
             let ve = parseFloat(monto) + tcf
-            console.log("ve: ", ve);
-
-            let tcea = Math.pow(ve / vr, diasAnio / numDias) - 1;
-            console.log("tcea: ", tcea*100)
-            return tcea*100
+            console.log('ve: ', ve);
+            /* TCEA */
+            let tcea = (Math.pow((ve/vr), (diasporaño / td)) -1) * 100
+            console.log('tcea: ', tcea);
+            return tcea
         },
         
         showTCEA(){
             this.error = ''
                 
             if(this.newtcea.dias && this.newtcea.plazo && this.newtcea.tipotasa && this.newtcea.tasa && this.newtcea.fechaDescuento && this.newtcea.gastosIniciales && this.newtcea.valorEfectivoGI && this.newtcea.gastosFinales && this.newtcea.valorEfectivoGF){
-                
-                let tceafinal = this.calculateTCEA(this.newtcea.monto, this.newtcea.dias, this.newtcea.fechapago, this.newtcea.tasa, this.newtcea.fechaDescuento, this.newtcea.valorEfectivoGI, this.newtcea.valorEfectivoGF)
+            
+                let tceafinal = this.calculateTCEA(this.newtcea.fechapago, this.newtcea.fechaDescuento, this.newtcea.plazo, this.newtcea.tasa, this.newtcea.tipotasa, this.newtcea.capitalizacion, this.newtcea.dias, this.newtcea.monto, this.newtcea.valorEfectivoGI, this.newtcea.valorEfectivoGF)
                 this.newtcea.tcea = tceafinal
                 tceaRef.push(this.newtcea)
                 console.log(tceafinal)
