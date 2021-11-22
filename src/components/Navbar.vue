@@ -58,14 +58,14 @@
             <v-list-item disabled>
               <v-list-item-title>Dscto. de Letras</v-list-item-title>
               <v-list-item-icon>
-                <v-icon>mdi-file-outline</v-icon>
+                <v-icon disabled>mdi-file-outline</v-icon>
               </v-list-item-icon>
             </v-list-item>
 
             <v-list-item disabled>
               <v-list-item-title>Dscto. de Recibos</v-list-item-title>
               <v-list-item-icon>
-                <v-icon>mdi-card-bulleted-outline</v-icon>
+                <v-icon disabled>mdi-card-bulleted-outline</v-icon>
               </v-list-item-icon>
             </v-list-item>
           </v-list-group>

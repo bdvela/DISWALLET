@@ -205,9 +205,80 @@
                   width="150px"
                   @click="closeresults()"
                 >
-                  Salir
+                  Confirmar
                 </v-btn>
               </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <v-dialog v-model="dialog4" max-width="100vh">
+            <template v-slot:activator="{ on, attrs }">
+              <div color="primary" fab v-bind="attrs" v-on="on" disabled></div>
+            </template>
+            <v-card class="results-dialog" rounded="xl" elevation="12">
+              <v-card-title class="justify-center">
+                <span class="text-h4">RESULTADOS</span>
+              </v-card-title>
+              <v-card-text class="justify-center">
+                <table cellspacing="15">
+                  <tbody>
+                    <tr style="height: 23px">
+                      <td style="height: 23px">
+                        Tasa Efectiva anual (Sin Costes):
+                        <b>{{ newtcea.tea }}% </b>
+                      </td>
+                      <td style="height: 23px">
+                        Costes Iniciales Totales: <b>{{ newtcea.ci }}</b>
+                      </td>
+                    </tr>
+                    <tr style="height: 23px">
+                      <td style="height: 23px">
+                        Número de días transcurridos: <b>{{ newtcea.nd }}</b>
+                      </td>
+                      <td style="height: 23px">
+                        Valor Neto: <b>{{ newtcea.vnet }}</b>
+                      </td>
+                    </tr>
+                    <tr style="height: 23px">
+                      <td style="height: 23px">
+                        Tasa Efectiva a {{ newtcea.nd }} días:
+                        <b>{{ newtcea.te }}%</b>
+                      </td>
+                      <td style="height: 23px">
+                        Valor Total a Recibir: <b>{{ newtcea.vr }}</b>
+                      </td>
+                    </tr>
+                    <tr style="height: 23px">
+                      <td style="height: 23px">
+                        Tasa Descontada a {{ newtcea.nd }} días:
+                        <b>{{ newtcea.d }}%</b>
+                      </td>
+                      <td style="height: 23px">
+                        Costes Finales Totales: <b>{{ newtcea.cf }}</b>
+                      </td>
+                    </tr>
+                    <tr style="height: 23px">
+                      <td style="height: 23px">
+                        Descuento por días: <b>{{ newtcea._d }}</b>
+                      </td>
+                      <td style="height: 23px">
+                        Valor Total a Entregar: <b>{{ newtcea.ve }}</b>
+                      </td>
+                    </tr>
+                    <tr style="height: 23px">
+                      <td style="height: 23px">
+                        Retención: <b>{{ newtcea.retencion }}</b>
+                      </td>
+                      <td style="height: 23px">
+                        <b
+                          >Tasa de Coste Efectivo Anual (TCEA):
+                          {{ newtcea.tcea }}%</b
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </v-card-text>
             </v-card>
           </v-dialog>
 
@@ -431,10 +502,38 @@
             >
           </div>
           <div v-else>
-            {{ item.tcea }}
+            <a @click.stop="getresults(item.id)">{{ item.tcea }}</a>
           </div>
         </template>
       </v-data-table>
+    </v-card>
+    <v-card class="wallet-card" elevation="4" rounded="xl" v-if="id > 1">
+      <v-card-title>
+        <v-spacer></v-spacer>
+        <h2>Cartera de Facturas</h2>
+        <v-spacer></v-spacer>
+        <v-btn fab rounded color="primary" @click="crearcartera()">
+          <v-icon>mdi-refresh</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-card-subtitle> </v-card-subtitle>
+      <v-divider light></v-divider>
+      <v-card-text>
+        <v-data-table
+          :header="items"
+          :items="walletitems"
+          hide-default-header
+          hide-default-footer
+          items-per-page="50"
+        >
+          <template slot="no-data">
+            <div>
+              Tu cartera está vacía. Empieza a crear facturas para calcular tu
+              cartera automáticamente
+            </div>
+          </template>
+        </v-data-table>
+      </v-card-text>
     </v-card>
   </div>
 </template>
@@ -476,8 +575,24 @@ export default {
         { text: "DIVISA", value: "kindOfMoney" },
         { text: "TCEA (%)", value: "tcea", sortable: false },
       ],
+      walletheader: [
+        {
+          text: "Info",
+          align: "start",
+          value: "info",
+          sortable: false,
+        },
+        { text: "Resultado", value: "resultado", sortable: false },
+      ],
       butid: 0,
       items: [],
+      walletitems: [
+        { info: " Valor Total a Recibir por la Cartera: ", resultado: "" },
+        {
+          info: "Tasa de Coste Efectiva Anual de la Cartera: ",
+          resultado: "",
+        },
+      ],
       id: 0,
       id2: 0,
       notcea: 0,
@@ -486,6 +601,7 @@ export default {
       dialog: false,
       dialog2: false,
       dialog3: false,
+      dialog4: false,
       keys: {
         id: 0,
         key: "",
@@ -568,6 +684,9 @@ export default {
   },
 
   methods: {
+    xd() {
+      this.dialog4 = true;
+    },
     initialize: function () {
       billsRef.get().then((snapshot) => {
         snapshot.forEach((doc) => {
@@ -659,6 +778,40 @@ export default {
       console.log("monto: ", this.items[btnid - 1].monto);
       console.log("retencion: ", this.items[btnid - 1].retencion);
       this.dialog2 = true;
+    },
+
+    getresults: function (btnid) {
+      console.log(btnid);
+      this.butid = btnid;
+      billsRef.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+          const bill = doc.val();
+          if (bill.userid == firebase.auth().currentUser.uid) {
+            resultsRef.get().then((snap) => {
+              snap.forEach((data) => {
+                const result = data.val();
+                if (result.billid == this.butid) {
+                  this.newtcea.tea = result.tea;
+                  this.newtcea.nd = result.nd;
+                  this.newtcea.te = result.te;
+                  this.newtcea.d = result.d;
+                  this.newtcea._d = result._d;
+                  this.newtcea.rt = result.rt;
+                  this.newtcea.ci = result.ci;
+                  this.newtcea.vnet = result.vnet;
+                  this.newtcea.vr = result.vr;
+                  this.newtcea.cf = result.cf;
+                  this.newtcea.ve = result.ve;
+                  this.newtcea.tcea = result.tcea;
+
+                  console.log(this.newtcea);
+                }
+              });
+            });
+          }
+        });
+      });
+      this.dialog4 = true;
     },
 
     calculateTCEA: function (
@@ -879,6 +1032,21 @@ export default {
         this.error = "Todos los campos son requeridos.";
       }
     },
+    crearcartera() {
+      billsRef.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+          const bill = doc.val();
+          if (bill.userid == firebase.auth().currentUser.uid) {
+            resultsRef.get().then((snap) => {
+              snap.forEach((data) => {
+                const result = data.val();
+                console.log(result);
+              });
+            });
+          }
+        });
+      });
+    },
   },
 };
 </script>
@@ -887,6 +1055,12 @@ export default {
 .bills-card {
   padding: 20px;
   margin: 50px;
+}
+
+.wallet-card {
+  padding: 20px;
+  margin: auto;
+  width: 50%;
 }
 
 .col-register {
