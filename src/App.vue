@@ -1,8 +1,8 @@
 <template>
-  <v-app >
+  <v-app>
     <v-main>
       <v-container>
-        <router-view/>    
+        <router-view />
       </v-container>
     </v-main>
   </v-app>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'App',
+  name: "App",
 
   data: () => ({
     //
@@ -19,13 +19,12 @@ export default {
 </script>
 
 <style>
- #app{
-    color: #7146ED;
-  }
- 
-span{
-  color: #7146ED;
-  font-weight: bolder;
+#app {
+  color: #7146ed;
 }
 
+span {
+  color: #7146ed;
+  font-weight: bolder;
+}
 </style>
