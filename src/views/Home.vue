@@ -1,19 +1,17 @@
 <template>
   <div>
     <Navbar></Navbar>
-    <v-card>
-      <v-parallax>
-        <v-carousel hide-delimiters>
-          <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.src">
-            <v-card-title class="parallax-car">
-              <p>
-                <span class="header-title">Somos Diswallet</span> <br />
-                <br />
-                tu aliado en las finanzas.
-              </p>
-            </v-card-title></v-carousel-item
-          >
-        </v-carousel>
+    <v-card rounded="lg">
+      <v-parallax src="https://fondosmil.com/fondo/89698.jpg">
+        <div class="parallax-car">
+          <v-card-title>
+            <h1>
+              <span class="header-title">Bienvenido a Diswallet</span> <br />
+              <br />
+              Tu aliado en las finanzas.
+            </h1>
+          </v-card-title>
+        </div>
       </v-parallax>
     </v-card>
     <v-container>
@@ -146,6 +144,7 @@ export default {
   padding-left: 60px;
   align-content: flex-start;
   color: white;
+  left: 0%;
 }
 
 .fact {

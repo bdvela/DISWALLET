@@ -98,16 +98,6 @@
                         ></v-text-field>
                       </v-col>
                       <v-col class="col-register" cols="12" sm="6">
-                        <v-subheader>Retención</v-subheader>
-                        <v-text-field
-                          v-model="newBill.retencion"
-                          placeholder="0.00"
-                          type="number"
-                          filled
-                          rounded
-                        ></v-text-field>
-                      </v-col>
-                      <v-col class="col-register" cols="12" sm="6">
                         <v-subheader>Monto Total</v-subheader>
                         <v-text-field
                           v-model="newBill.monto"
@@ -117,8 +107,18 @@
                           rounded
                         ></v-text-field>
                       </v-col>
+                      <v-col class="col-register" cols="12" sm="6">
+                        <v-subheader>Retención</v-subheader>
+                        <v-text-field
+                          v-model="newBill.retencion"
+                          placeholder="0.00"
+                          type="number"
+                          filled
+                          rounded
+                        ></v-text-field>
+                      </v-col>
                     </v-row>
-                    <div class="text-center mt-2">
+                    <div class="text-center mt-12">
                       <v-btn color="primary" rounded x-large type="submit"
                         >Registrar Factura</v-btn
                       >
@@ -135,63 +135,80 @@
             </template>
             <v-card class="results-dialog" rounded="xl" elevation="12">
               <v-card-title class="justify-center">
-                <span class="text-h4">RESULTADOS</span>
+                <span class="display-3">RESULTADOS</span>
               </v-card-title>
               <v-card-text class="justify-center">
                 <table cellspacing="15">
                   <tbody>
+                    <br />
                     <tr style="height: 23px">
                       <td style="height: 23px">
                         Tasa Efectiva anual (Sin Costes):
-                        <b>{{ newtcea.tea }}% </b>
                       </td>
-                      <td style="height: 23px">
-                        Costes Iniciales Totales: <b>{{ newtcea.ci }}</b>
+                      <td class="resultado">
+                        <b> {{ newtcea.tea }}% </b>
+                      </td>
+                      <td style="height: 23px">Costes Iniciales Totales:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.ci }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
                       <td style="height: 23px">
-                        Número de días transcurridos: <b>{{ newtcea.nd }}</b>
+                        Número de días transcurridos:
                       </td>
-                      <td style="height: 23px">
-                        Valor Neto: <b>{{ newtcea.vnet }}</b>
+                      <td class="resultado">
+                        <b>{{ newtcea.nd }}</b>
+                      </td>
+                      <td style="height: 23px">Valor Neto:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.vnet }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
                       <td style="height: 23px">
                         Tasa Efectiva a {{ newtcea.nd }} días:
+                      </td>
+                      <td class="resultado">
                         <b>{{ newtcea.te }}%</b>
                       </td>
-                      <td style="height: 23px">
-                        Valor Total a Recibir: <b>{{ newtcea.vr }}</b>
+                      <td style="height: 23px">Valor Total a Recibir:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.vr }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
                       <td style="height: 23px">
                         Tasa Descontada a {{ newtcea.nd }} días:
+                      </td>
+                      <td class="resultado">
                         <b>{{ newtcea.d }}%</b>
                       </td>
-                      <td style="height: 23px">
-                        Costes Finales Totales: <b>{{ newtcea.cf }}</b>
+                      <td style="height: 23px">Costes Finales Totales:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.cf }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Descuento por días: <b>{{ newtcea._d }}</b>
+                      <td style="height: 23px">Descuento por días:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea._d }}</b>
                       </td>
-                      <td style="height: 23px">
-                        Valor Total a Entregar: <b>{{ newtcea.ve }}</b>
+                      <td style="height: 23px">Valor Total a Entregar:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.ve }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Retención: <b>{{ newtcea.retencion }}</b>
+                      <td style="height: 23px">Retención:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.retencion }}</b>
                       </td>
                       <td style="height: 23px">
-                        <b
-                          >Tasa de Coste Efectivo Anual (TCEA):
-                          {{ newtcea.tcea }}%</b
-                        >
+                        <b>Tasa de Coste Efectivo Anual (TCEA): </b>
+                      </td>
+                      <td class="resultado">
+                        <b>{{ newtcea.tcea }}%</b>
                       </td>
                     </tr>
                   </tbody>
@@ -217,63 +234,81 @@
             </template>
             <v-card class="results-dialog" rounded="xl" elevation="12">
               <v-card-title class="justify-center">
-                <span class="text-h4">RESULTADOS</span>
+                <span class="display-3">RESULTADOS</span>
               </v-card-title>
               <v-card-text class="justify-center">
                 <table cellspacing="15">
                   <tbody>
+                    <br />
                     <tr style="height: 23px">
                       <td style="height: 23px">
                         Tasa Efectiva anual (Sin Costes):
-                        <b>{{ newtcea.tea }}% </b>
                       </td>
-                      <td style="height: 23px">
-                        Costes Iniciales Totales: <b>{{ newtcea.ci }}</b>
+                      <td class="resultado">
+                        <b> {{ newtcea.tea }}% </b>
+                      </td>
+
+                      <td style="height: 23px">Costes Iniciales Totales:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.ci }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
                       <td style="height: 23px">
-                        Número de días transcurridos: <b>{{ newtcea.nd }}</b>
+                        Número de días transcurridos:
                       </td>
-                      <td style="height: 23px">
-                        Valor Neto: <b>{{ newtcea.vnet }}</b>
+                      <td class="resultado">
+                        <b>{{ newtcea.nd }}</b>
+                      </td>
+                      <td style="height: 23px">Valor Neto:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.vnet }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
                       <td style="height: 23px">
                         Tasa Efectiva a {{ newtcea.nd }} días:
+                      </td>
+                      <td class="resultado">
                         <b>{{ newtcea.te }}%</b>
                       </td>
-                      <td style="height: 23px">
-                        Valor Total a Recibir: <b>{{ newtcea.vr }}</b>
+                      <td style="height: 23px">Valor Total a Recibir:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.vr }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
                       <td style="height: 23px">
                         Tasa Descontada a {{ newtcea.nd }} días:
+                      </td>
+                      <td class="resultado">
                         <b>{{ newtcea.d }}%</b>
                       </td>
-                      <td style="height: 23px">
-                        Costes Finales Totales: <b>{{ newtcea.cf }}</b>
+                      <td style="height: 23px">Costes Finales Totales:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.cf }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Descuento por días: <b>{{ newtcea._d }}</b>
+                      <td style="height: 23px">Descuento por días:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea._d }}</b>
                       </td>
-                      <td style="height: 23px">
-                        Valor Total a Entregar: <b>{{ newtcea.ve }}</b>
+                      <td style="height: 23px">Valor Total a Entregar:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.ve }}</b>
                       </td>
                     </tr>
                     <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Retención: <b>{{ newtcea.retencion }}</b>
+                      <td style="height: 23px">Retención:</td>
+                      <td class="resultado">
+                        <b>{{ newtcea.retencion }}</b>
                       </td>
                       <td style="height: 23px">
-                        <b
-                          >Tasa de Coste Efectivo Anual (TCEA):
-                          {{ newtcea.tcea }}%</b
-                        >
+                        <b>Tasa de Coste Efectivo Anual (TCEA): </b>
+                      </td>
+                      <td class="resultado">
+                        <b>{{ newtcea.tcea }}%</b>
                       </td>
                     </tr>
                   </tbody>
@@ -315,7 +350,7 @@
 
                       <v-col class="col-register" cols="12" sm="4">
                         <h3>Costes / Gastos</h3>
-                        <v-subheader>Gastos iniciales: </v-subheader>
+                        <v-subheader>Gastos iniciales </v-subheader>
                         <v-select
                           :items="gastos"
                           v-model="newtcea.gastosIniciales"
@@ -418,7 +453,7 @@
                       </v-col>
                       <v-col class="col-register" cols="12" sm="4">
                         <v-divider></v-divider>
-                        <v-subheader>Gastos finales: </v-subheader>
+                        <v-subheader>Gastos finales</v-subheader>
                         <v-select
                           :items="gastos"
                           v-model="newtcea.gastosFinales"
@@ -803,6 +838,7 @@ export default {
                   this.newtcea.cf = result.cf;
                   this.newtcea.ve = result.ve;
                   this.newtcea.tcea = result.tcea;
+                  this.newtcea.retencion = result.retencion;
 
                   console.log(this.newtcea);
                 }
@@ -888,10 +924,10 @@ export default {
       let plaz = Number;
       switch (plazo) {
         case "Diario":
-          cap = 1 / 30;
+          plaz = 1 / 30;
           break;
         case "Quincenal":
-          cap = 1 / 2;
+          plaz = 1 / 2;
           break;
         case "Mensual":
           plaz = 1;
@@ -1091,6 +1127,15 @@ export default {
   position: absolute;
   display: flex;
   left: 80%;
+}
+
+.resultado {
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  border-collapse: collapse;
+  text-align: right;
+  background-color: rgb(247, 247, 247);
 }
 
 .PEN {
