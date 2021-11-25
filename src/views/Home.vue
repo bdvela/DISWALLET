@@ -98,24 +98,24 @@
 </template>
 
 <script>
-import Navbar from "../components/Navbar.vue";
+import Navbar from '../components/Navbar.vue';
 
 export default {
-  name: "Home",
+  name: 'Home',
   data() {
     return {
       items: [
         {
-          src: "https://fondosmil.com/fondo/89698.jpg",
+          src: 'https://fondosmil.com/fondo/89698.jpg',
         },
         {
-          src: "https://fondosmil.com/fondo/89798.jpg",
+          src: 'https://fondosmil.com/fondo/89798.jpg',
         },
         {
-          src: "https://fondosmil.com/fondo/89813.jpg",
+          src: 'https://fondosmil.com/fondo/89813.jpg',
         },
         {
-          src: "https://www.esan.edu.pe/apuntes-empresariales/2015/08/05/Indicadores_Financieros_Considerar_Facebook/Indicadores_Financieros_Considerar_Facebook.jpg",
+          src: 'https://www.esan.edu.pe/apuntes-empresariales/2015/08/05/Indicadores_Financieros_Considerar_Facebook/Indicadores_Financieros_Considerar_Facebook.jpg',
         },
       ],
     };

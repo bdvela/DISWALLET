@@ -542,48 +542,59 @@
         </template>
       </v-data-table>
     </v-card>
-    <v-card class="wallet-card" elevation="4" rounded="xl" v-if="id > 1">
+    <v-card class="wallet-card" elevation="4" rounded="xl" v-if="id > 0">
       <v-card-title>
         <v-spacer></v-spacer>
         <h2>Cartera de Facturas</h2>
         <v-spacer></v-spacer>
-        <v-btn fab rounded color="primary" @click="crearcartera()">
+        <v-btn fab rounded color="primary" @click="closeresults()">
           <v-icon>mdi-refresh</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-subtitle> </v-card-subtitle>
       <v-divider light></v-divider>
-      <v-card-text>
-        <v-data-table
-          :header="items"
-          :items="walletitems"
-          hide-default-header
-          hide-default-footer
-          items-per-page="50"
-        >
-          <template slot="no-data">
-            <div>
-              Tu cartera está vacía. Empieza a crear facturas para calcular tu
-              cartera automáticamente
-            </div>
-          </template>
-        </v-data-table>
+      <v-card-text class="table">
+        <v-row>
+          <v-col cols="12" sm="12">
+            <table cellspacing="15">
+              <tbody>
+                <br />
+                <tr style="height: 23px">
+                  <td style="height: 23px  width: 50%">
+                    Valor Total a Recibir por la Cartera (VR):
+                  </td>
+                  <td class="resultado" style="height: 23px  width: 60%">
+                    <b> {{ vr_wallet }}</b>
+                  </td>
+                </tr>
+                <tr style="height: 23px">
+                  <td style="height: 23px width: 50%">
+                    Tasa de Coste Efectiva Anual de la Cartera (TCEA):
+                  </td>
+                  <td class="resultado" style="width: 60%">
+                    <b> {{ tcea_wallet }}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
-import firebase from "firebase/compat/app";
-import Navbar from "../components/Navbar.vue";
-import moment from "moment";
+import firebase from 'firebase/compat/app';
+import Navbar from '../components/Navbar.vue';
+import moment from 'moment';
 
 let db = firebase.database();
-let billsRef = db.ref("bills");
-let resultsRef = db.ref("results");
-let keysRef = db.ref("keysx");
+let billsRef = db.ref('bills');
+let resultsRef = db.ref('results');
+let keysRef = db.ref('keysx');
 export default {
-  name: "Bills",
+  name: 'Bills',
   components: {
     Navbar,
   },
@@ -595,43 +606,32 @@ export default {
   },
   data() {
     return {
-      totalfacturado: "hola",
-      search: "",
+      totalfacturado: 'hola',
+      search: '',
       headers: [
         {
-          text: "ID",
-          align: "start",
-          value: "id",
+          text: 'ID',
+          align: 'start',
+          value: 'id',
         },
-        { text: "Nombre de la empresa", value: "empresa" },
-        { text: "Fecha de emisión", value: "emision" },
-        { text: "Fecha de pago", value: "fechapago" },
-        { text: "Monto", value: "monto" },
-        { text: "DIVISA", value: "kindOfMoney" },
-        { text: "TCEA (%)", value: "tcea", sortable: false },
+        { text: 'Nombre de la empresa', value: 'empresa' },
+        { text: 'Fecha de emisión', value: 'emision' },
+        { text: 'Fecha de pago', value: 'fechapago' },
+        { text: 'Monto', value: 'monto' },
+        { text: 'DIVISA', value: 'kindOfMoney' },
+        { text: 'TCEA (%)', value: 'tcea', sortable: false },
       ],
-      walletheader: [
-        {
-          text: "Info",
-          align: "start",
-          value: "info",
-          sortable: false,
-        },
-        { text: "Resultado", value: "resultado", sortable: false },
-      ],
+      vr_wallet: 0,
+      ve_wallet: 0,
+      dias_wallet: 0,
+      transcurridos_wallet: 0,
+      tcea_wallet: 0,
       butid: 0,
       items: [],
-      walletitems: [
-        { info: " Valor Total a Recibir por la Cartera: ", resultado: "" },
-        {
-          info: "Tasa de Coste Efectiva Anual de la Cartera: ",
-          resultado: "",
-        },
-      ],
       id: 0,
       id2: 0,
       notcea: 0,
-      error: "",
+      error: '',
       editedIndex: -1,
       dialog: false,
       dialog2: false,
@@ -639,78 +639,79 @@ export default {
       dialog4: false,
       keys: {
         id: 0,
-        key: "",
+        key: '',
       },
       newtcea: {
-        billid: "",
-        dias: "",
-        plazo: "",
-        tipotasa: "",
-        tasa: "",
-        fechaDescuento: "",
-        gastosIniciales: "",
-        valorEfectivoGI: "",
-        gastosFinales: "",
-        valorEfectivoGF: "",
-        emision: "",
-        monto: "",
-        fechapago: "",
-        capitalizacion: "",
-        tea: "",
-        nd: "",
-        te: "",
-        d: "",
-        _d: "",
-        rt: "",
-        ci: "",
-        vnet: "",
-        vr: "",
-        cf: "",
-        ve: "",
+        billid: '',
+        dias: '',
+        plazo: '',
+        tipotasa: '',
+        tasa: '',
+        fechaDescuento: '',
+        gastosIniciales: '',
+        valorEfectivoGI: '',
+        gastosFinales: '',
+        valorEfectivoGF: '',
+        emision: '',
+        monto: '',
+        fechapago: '',
+        capitalizacion: '',
+        tea: '',
+        nd: '',
+        te: '',
+        d: '',
+        _d: '',
+        rt: '',
+        ci: '',
+        vnet: '',
+        vr: '',
+        cf: '',
+        ve: '',
         tcea: 0,
+        uid: 0,
       },
       newBill: {
         userid: 0,
         id: 0,
-        ruc: "",
-        empresa: "",
-        emision: "",
-        fechapago: "",
-        monto: "",
-        kindOfMoney: "",
-        retencion: "",
+        ruc: '',
+        empresa: '',
+        emision: '',
+        fechapago: '',
+        monto: '',
+        kindOfMoney: '',
+        retencion: '',
         tcea: 0,
       },
       // V-SELECT TCEA
       days: [360, 365],
       plazo: [
-        "Diario",
-        "Quincenal",
-        "Mensual",
-        "Bimestral",
-        "Trimestral",
-        "Cuatrimestral",
-        "Semestral",
-        "Anual",
+        'Diario',
+        'Quincenal',
+        'Mensual',
+        'Bimestral',
+        'Trimestral',
+        'Cuatrimestral',
+        'Semestral',
+        'Anual',
       ],
       gastos: [
-        "Portes",
-        "Fotocopias",
-        "Gastos de administración",
-        "Gastos notariales",
-        "Gastos registrales",
-        "Seguro",
-        "Otros gastos",
+        'Portes',
+        'Fotocopias',
+        'Gastos de administración',
+        'Gastos notariales',
+        'Gastos registrales',
+        'Seguro',
+        'Otros gastos',
       ],
       capitalizacion: [
-        "Diario",
-        "Quincenal",
-        "Mensual",
-        "Bimestral",
-        "Trimestral",
-        "Cuatrimestral",
-        "Semestral",
-        "Anual",
+        'Diario',
+        'Quincenal',
+        'Mensual',
+        'Bimestral',
+        'Trimestral',
+        'Cuatrimestral',
+        'Semestral',
+        'Anual',
       ],
     };
   },
@@ -733,12 +734,13 @@ export default {
             console.log(this.tcea);
             this.numitems = bill.id;
           } else {
-            console.log("ID : ", bill.userid);
-            console.log("UID : ", firebase.auth().currentUser.uid);
-            console.log("next");
+            console.log('ID : ', bill.userid);
+            console.log('UID : ', firebase.auth().currentUser.uid);
+            console.log('next');
           }
         });
       });
+      this.calculateWallet();
     },
 
     closebills() {
@@ -759,7 +761,7 @@ export default {
       location.reload();
     },
     addBill() {
-      this.error = "";
+      this.error = '';
       if (
         this.newBill.ruc &&
         this.newBill.empresa &&
@@ -768,9 +770,9 @@ export default {
         this.newBill.monto
       ) {
         if (this.kindOfMoney == 1) {
-          this.newBill.kindOfMoney = "USD";
+          this.newBill.kindOfMoney = 'USD';
         } else {
-          this.newBill.kindOfMoney = "PEN";
+          this.newBill.kindOfMoney = 'PEN';
         }
 
         //ACTUALIZAR ID
@@ -779,7 +781,7 @@ export default {
 
         //ASIGNAR ID DE USUARIO
         this.newBill.userid = firebase.auth().currentUser.uid;
-        console.log("USER ID : ", this.newBill.userid);
+        console.log('USER ID : ', this.newBill.userid);
 
         //TCEA = 0 PARA QUE APAREZCA EL BOTÓN CALCULAR
         this.newBill.tcea = 0;
@@ -796,7 +798,7 @@ export default {
 
         this.closebills();
       } else {
-        this.error = "Todos los campos son requeridos.";
+        this.error = 'Todos los campos son requeridos.';
       }
     },
 
@@ -808,10 +810,10 @@ export default {
       this.newtcea.fechapago = this.items[btnid - 1].fechapago;
       this.newtcea.monto = this.items[btnid - 1].monto;
       this.newtcea.retencion = this.items[btnid - 1].retencion;
-      console.log("emision: ", this.items[btnid - 1].emision);
-      console.log("fecha de pago: ", this.items[btnid - 1].fechapago);
-      console.log("monto: ", this.items[btnid - 1].monto);
-      console.log("retencion: ", this.items[btnid - 1].retencion);
+      console.log('emision: ', this.items[btnid - 1].emision);
+      console.log('fecha de pago: ', this.items[btnid - 1].fechapago);
+      console.log('monto: ', this.items[btnid - 1].monto);
+      console.log('retencion: ', this.items[btnid - 1].retencion);
       this.dialog2 = true;
     },
 
@@ -850,6 +852,44 @@ export default {
       this.dialog4 = true;
     },
 
+    calculateWallet: function () {
+      // let results = [];
+      let tir = 0;
+      console.log('tir: ', tir);
+      let tcea = 0;
+      let suma_vr = 0;
+      let suma_ve = 0;
+      let suma_dias = 0;
+      let suma_transcurridos = 0;
+      console.log('tcea: ', tcea);
+      resultsRef.get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+          const result = doc.val();
+          if (result.userid == firebase.auth().currentUser.uid) {
+            console.log('result: ', result.vr);
+            this.vr_wallet += parseFloat(result.vr);
+            this.ve_wallet += parseFloat(result.ve);
+            this.dias_wallet += parseFloat(result.dias);
+            console.log(result.dias);
+            this.transcurridos_wallet += parseFloat(result.nd);
+            console.log(result.nd);
+            console.log('suma_vr: ', this.vr_wallet);
+          }
+        });
+      });
+      suma_vr = this.vr_wallet;
+      suma_ve = this.ve_wallet;
+      suma_dias = this.dias_wallet;
+      suma_transcurridos = this.transcurridos_wallet;
+      this.tcea_wallet = parseFloat(
+        Math.pow(suma_ve / suma_vr, suma_dias / suma_transcurridos) - 1
+      );
+      console.log(suma_vr);
+      console.log(suma_ve);
+      console.log(suma_dias);
+      console.log(suma_transcurridos);
+    },
+
     calculateTCEA: function (
       fechapago,
       fechadescuento,
@@ -863,55 +903,55 @@ export default {
       cgf,
       retencion
     ) {
-      console.log("Fecha de pago: ", fechapago);
-      console.log("Fecha de descuento: ", fechadescuento);
-      console.log("Plazo: ", plazo);
-      console.log("Tasa: ", tasa);
-      console.log("Tipo de tasa: ", tipotasa);
-      console.log("Capitalización: ", capitalizacion);
-      console.log("Días: ", dias);
-      console.log("Monto: ", monto);
-      console.log("CGI: ", cgi);
-      console.log("CGF: ", cgf);
+      console.log('Fecha de pago: ', fechapago);
+      console.log('Fecha de descuento: ', fechadescuento);
+      console.log('Plazo: ', plazo);
+      console.log('Tasa: ', tasa);
+      console.log('Tipo de tasa: ', tipotasa);
+      console.log('Capitalización: ', capitalizacion);
+      console.log('Días: ', dias);
+      console.log('Monto: ', monto);
+      console.log('CGI: ', cgi);
+      console.log('CGF: ', cgf);
 
-      console.log("__________");
+      console.log('__________');
       /* Dias por año */
       let diasporaño = parseInt(dias);
-      console.log("diasporaño: ", dias);
+      console.log('diasporaño: ', dias);
       /* Tiempo de Descuento */
-      let fechaPago = moment(fechapago, "YYYY/MM/DD");
-      let fechaDescuento = moment(fechadescuento, "YYYY/MM/DD");
-      let fechaDiferencia = parseInt(fechaPago.diff(fechaDescuento, "days"));
+      let fechaPago = moment(fechapago, 'YYYY/MM/DD');
+      let fechaDescuento = moment(fechadescuento, 'YYYY/MM/DD');
+      let fechaDiferencia = parseInt(fechaPago.diff(fechaDescuento, 'days'));
       let td = fechaDiferencia; //fechapago - fechadescuento;
-      console.log("fechaPago: ", fechaPago);
-      console.log("FechaDescuento: ", fechaDescuento);
-      console.log("Fecha Diferencia: ", fechaDiferencia);
-      console.log("td: ", td);
+      console.log('fechaPago: ', fechaPago);
+      console.log('FechaDescuento: ', fechaDescuento);
+      console.log('Fecha Diferencia: ', fechaDiferencia);
+      console.log('td: ', td);
 
       let cap = Number;
       switch (capitalizacion) {
-        case "Diario":
+        case 'Diario':
           cap = 1 / 30;
           break;
-        case "Quincenal":
+        case 'Quincenal':
           cap = 1 / 2;
           break;
-        case "Mensual":
+        case 'Mensual':
           cap = 1;
           break;
-        case "Bimestral":
+        case 'Bimestral':
           cap = 2;
           break;
-        case "Trimestral":
+        case 'Trimestral':
           cap = 3;
           break;
-        case "Cuatrimestral":
+        case 'Cuatrimestral':
           cap = 4;
           break;
-        case "Semestral":
+        case 'Semestral':
           cap = 6;
           break;
-        case "Anual":
+        case 'Anual':
           cap = 12;
           break;
 
@@ -919,32 +959,32 @@ export default {
           cap = 12;
           break;
       }
-      console.log("cap: ", cap);
+      console.log('cap: ', cap);
 
       let plaz = Number;
       switch (plazo) {
-        case "Diario":
+        case 'Diario':
           plaz = 1 / 30;
           break;
-        case "Quincenal":
+        case 'Quincenal':
           plaz = 1 / 2;
           break;
-        case "Mensual":
+        case 'Mensual':
           plaz = 1;
           break;
-        case "Bimestral":
+        case 'Bimestral':
           plaz = 2;
           break;
-        case "Trimestral":
+        case 'Trimestral':
           plaz = 3;
           break;
-        case "Cuatrimestral":
+        case 'Cuatrimestral':
           plaz = 4;
           break;
-        case "Semestral":
+        case 'Semestral':
           plaz = 6;
           break;
-        case "Anual":
+        case 'Anual':
           plaz = 12;
           break;
 
@@ -952,11 +992,11 @@ export default {
           plaz = 12;
           break;
       }
-      console.log("Plaz: ", plaz);
-      console.log("cap: ", cap);
+      console.log('Plaz: ', plaz);
+      console.log('cap: ', cap);
       /* Tasa Efectiva para un plazo */
       let te = Number;
-      if (tipotasa == "Efectiva") {
+      if (tipotasa == 'Efectiva') {
         //Para Tasa Efectiva
         te = Math.pow(1 + parseFloat(tasa) / 100, td / (plaz * 30)) - 1;
       } else {
@@ -966,31 +1006,31 @@ export default {
             td / (cap * 30)
           ) - 1;
       }
-      console.log("te: ", te);
+      console.log('te: ', te);
 
       let re = parseFloat(retencion);
       /* Descuento */
       let tasadcto = te / (1 + te);
       let dcto = parseFloat(monto) * tasadcto;
-      console.log("tasadcto: ", tasadcto);
+      console.log('tasadcto: ', tasadcto);
       /* Total costo inicial */
       let tci = parseFloat(cgi);
-      console.log("tci: ", tci);
+      console.log('tci: ', tci);
       /* Total costo final */
       let tcf = parseFloat(cgf);
-      console.log("tcf: ", tcf);
+      console.log('tcf: ', tcf);
       /* Valor neto */
       let vn = parseFloat(monto) - dcto;
-      console.log("vn: ", vn);
+      console.log('vn: ', vn);
       /* Valor recibido */
       let vr = vn - tci - re;
-      console.log("vr: ", vr);
+      console.log('vr: ', vr);
       /* Valor entregado */
       let ve = parseFloat(monto) + tcf - re;
-      console.log("ve: ", ve);
+      console.log('ve: ', ve);
       /* TCEA */
       let tcea = (Math.pow(ve / vr, diasporaño / td) - 1) * 100;
-      console.log("tcea: ", tcea);
+      console.log('tcea: ', tcea);
 
       this.newtcea.tea = tasa;
       this.newtcea.ci = tci;
@@ -1008,7 +1048,7 @@ export default {
     },
 
     showTCEA() {
-      this.error = "";
+      this.error = '';
 
       if (
         this.newtcea.dias &&
@@ -1034,6 +1074,7 @@ export default {
           this.newtcea.valorEfectivoGF,
           this.newtcea.retencion
         );
+        this.newtcea.userid = firebase.auth().currentUser.uid;
         resultsRef.push(this.newtcea);
 
         billsRef.get().then((snapshot) => {
@@ -1041,8 +1082,8 @@ export default {
             const bill = doc.val();
             if (bill.userid == firebase.auth().currentUser.uid) {
               if (bill.id == this.butid) {
-                console.log("bill id: ", bill.id);
-                console.log("button id: ", this.butid);
+                console.log('bill id: ', bill.id);
+                console.log('button id: ', this.butid);
                 console.log(this.keys);
                 keysRef.get().then((snap) => {
                   snap.forEach((data) => {
@@ -1050,11 +1091,11 @@ export default {
                     if (key.id == this.butid) {
                       firebase
                         .database()
-                        .ref("bills/" + key.key)
+                        .ref('bills/' + key.key)
                         .update({
                           tcea: tceafinal,
                         });
-                      console.log("paso: key: ", key.id, "butid: ", this.butid);
+                      console.log('paso: key: ', key.id, 'butid: ', this.butid);
                     }
                   });
                 });
@@ -1065,7 +1106,7 @@ export default {
         this.dialog2 = false;
         this.dialog3 = true;
       } else {
-        this.error = "Todos los campos son requeridos.";
+        this.error = 'Todos los campos son requeridos.';
       }
     },
     crearcartera() {
@@ -1113,6 +1154,14 @@ export default {
   padding: 3%;
 }
 
+.table {
+  justify-content: center;
+  justify-items: center;
+  justify-self: center;
+  align-content: center;
+  align-items: center;
+  align-self: center;
+}
 .results-dialog {
   width: 100vh;
   padding: 5%;
