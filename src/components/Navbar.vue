@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto overflow-hidden">
-    <v-app-bar app light fixed>
+    <v-app-bar light fixed>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <router-link to="./"
@@ -92,15 +92,15 @@
 </template>
 
 <script>
-import "../firebase/init";
-import firebase from "firebase/compat/app";
+import '../firebase/init';
+import firebase from 'firebase/compat/app';
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   data: () => ({
     drawer: false,
     group: null,
     user: null,
-    menu: "Diswallet",
+    menu: 'Diswallet',
   }),
   methods: {
     logout() {
@@ -108,7 +108,7 @@ export default {
         .auth()
         .signOut()
         .then(() => {
-          this.$router.push({ name: "Login" });
+          this.$router.push({ name: 'Login' });
         });
     },
   },
@@ -131,5 +131,15 @@ a {
 
 .item-menu {
   padding: 2%;
+}
+
+.parallax {
+  margin-top: 0px;
+  background: rgb(126, 41, 205);
+  background: linear-gradient(
+    90deg,
+    rgba(126, 41, 205, 1) 46%,
+    rgba(56, 129, 199, 1) 100%
+  );
 }
 </style>

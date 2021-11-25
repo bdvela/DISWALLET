@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar></Navbar>
-    <v-card rounded="lg">
+    <v-card rounded="lg" class="cardhero">
       <v-parallax src="https://fondosmil.com/fondo/89698.jpg">
         <div class="parallax-car">
           <v-card-title>
@@ -130,6 +130,9 @@ export default {
 .header-title {
   color: white;
   font-size: 58px;
+}
+.cardhero {
+  margin-top: 50px;
 }
 
 .parallax-car {

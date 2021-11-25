@@ -1,16 +1,16 @@
 <template>
   <v-app>
     <v-main>
-      <v-container>
+      <v-content>
         <router-view />
-      </v-container>
+      </v-content>
     </v-main>
   </v-app>
 </template>
 
 <script>
 export default {
-  name: "App",
+  name: 'App',
 
   data: () => ({
     //
@@ -21,6 +21,7 @@ export default {
 <style>
 #app {
   color: #7146ed;
+  background-color: rgb(249, 249, 249);
 }
 
 span {

@@ -1,6 +1,12 @@
 <template>
   <div>
     <Navbar></Navbar>
+    <v-card rounded="lg" elevation="12"
+      ><v-parallax class="parallax text-center" height="400"
+        ><h1 class="text-h2">Descuento de Facturas</h1></v-parallax
+      >
+    </v-card>
+
     <v-card class="bills-card" elevation="4" rounded="xl">
       <v-card-title>
         <h2>Mis Facturas</h2>
@@ -1132,6 +1138,8 @@ export default {
 .bills-card {
   padding: 20px;
   margin: 50px;
+
+  margin-top: -100px;
 }
 
 .wallet-card {
@@ -1189,5 +1197,14 @@ export default {
 
 .PEN {
   font-size: 15px;
+}
+.parallax {
+  background: rgb(98, 45, 195);
+  background: linear-gradient(
+    90deg,
+    rgba(98, 45, 195, 1) 0%,
+    rgba(113, 70, 237, 1) 50%,
+    rgba(98, 45, 195, 1) 100%
+  );
 }
 </style>
