@@ -1,4 +1,5 @@
-# diswallet
+# DISWALLET - Tu aliado en las finanzas
+
 
 ## Project setup
 ```
