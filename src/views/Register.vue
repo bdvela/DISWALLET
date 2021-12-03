@@ -7,113 +7,113 @@
             {{ error }}
           </v-alert>
         </v-row>
-        <v-card class="register-card" rounded="xl" elevation="12">
-          <v-card-title class="justify-center">
-            <h1>REGISTRO</h1>
-          </v-card-title>
-          <v-card-text>
-            <v-form class="mt-12" @submit.prevent="register">
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" class="col-register">
-                    <v-subheader>RUC</v-subheader>
-                    <v-text-field
-                      v-model="ruc"
-                      filled
-                      rounded
-                      autofocus
-                      placeholder="RUC"
-                      name="Ruc"
-                      type="text"
-                      color="primary accent-3"
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" class="col-register">
-                    <v-subheader>Nombre y Apellido</v-subheader>
-                    <v-text-field
-                      v-model="nombres"
-                      filled
-                      rounded
-                      id="nombre"
-                      placeholder="nombre y apellido"
-                      name="nombre"
-                      type="text"
-                      color="primary accent-3"
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" class="col-register">
-                    <v-subheader>Email</v-subheader>
-                    <v-text-field
-                      v-model="email"
-                      filled
-                      rounded
-                      id="email"
-                      placeholder="email"
-                      name="email"
-                      type="email"
-                      color="primary accent-3"
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" class="col-register">
-                    <v-subheader>Celular</v-subheader>
-                    <v-text-field
-                      v-model="celular"
-                      filled
-                      rounded
-                      id="celular"
-                      placeholder="celular"
-                      name="celular"
-                      type="number"
-                      color="primary accent-3"
-                    />
-                  </v-col>
-                  <v-col cols="12" sm="6" class="col-register">
-                    <v-subheader>Contraseña</v-subheader>
-                    <v-text-field
-                      v-model="contraseña"
-                      filled
-                      rounded
-                      id="password1"
-                      placeholder="**********"
-                      name="password1"
-                      type="password"
-                      color="primary accent-3"
-                    />
-                  </v-col>
-                </v-row>
-                <div class="text-center mt-2">
-                  <v-btn rounded x-large color="primary" type="submit"
-                    >Registrarme</v-btn
-                  >
-                </div>
-              </v-container>
-            </v-form>
-          </v-card-text>
-        </v-card>
+        <v-hover v-slot="{ hover }" close-delay="120">
+          <v-card
+            class="register-card"
+            rounded="xl"
+            :elevation="hover ? 16 : 6"
+            :class="{ 'on-hover': hover }"
+          >
+            <v-card-title class="justify-center">
+              <h1>REGISTRO</h1>
+            </v-card-title>
+            <v-card-text>
+              <v-form class="mt-6" @submit.prevent="register">
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-subheader>RUC</v-subheader>
+                      <v-text-field
+                        v-model="ruc"
+                        outlined
+                        rounded
+                        autofocus
+                        placeholder="RUC"
+                        type="text"
+                        color="primary accent-3"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-subheader>Nombre y Apellido</v-subheader>
+                      <v-text-field
+                        v-model="nombres"
+                        outlined
+                        rounded
+                        placeholder="nombre y apellido"
+                        type="text"
+                        color="primary accent-3"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-subheader>Email</v-subheader>
+                      <v-text-field
+                        v-model="email"
+                        outlined
+                        rounded
+                        placeholder="email"
+                        type="email"
+                        color="primary accent-3"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="6" class="col-register">
+                      <v-subheader>Celular</v-subheader>
+                      <v-text-field
+                        v-model="celular"
+                        outlined
+                        rounded
+                        placeholder="celular"
+                        type="phonenumber"
+                        color="primary accent-3"
+                      />
+                    </v-col>
+                    <v-col cols="12" sm="6" class="col-register">
+                      <v-subheader>Contraseña</v-subheader>
+                      <v-text-field
+                        v-model="contraseña"
+                        filled
+                        rounded
+                        id="password1"
+                        placeholder="**********"
+                        name="password1"
+                        type="password"
+                        color="primary accent-3"
+                      />
+                    </v-col>
+                  </v-row>
+                  <div class="text-center mt-2">
+                    <v-btn rounded x-large color="primary" type="submit"
+                      >Registrarme</v-btn
+                    >
+                  </div>
+                </v-container>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-hover>
       </v-col>
     </v-row>
   </v-app>
 </template>
 
 <script>
-import "../firebase/init";
-import firebase from "firebase/compat/app";
+import '../firebase/init';
+import firebase from 'firebase/compat/app';
 
 export default {
   data() {
     return {
-      ruc: "",
-      nombres: "",
-      email: "",
-      celular: "",
-      contraseña: "",
-      error: "",
+      ruc: '',
+      nombres: '',
+      email: '',
+      celular: '',
+      contraseña: '',
+      error: '',
     };
   },
-  name: "Register",
+  name: 'Register',
   methods: {
     register() {
-      this.error = "";
+      this.error = '';
       if (
         this.ruc &&
         this.nombres &&
@@ -132,12 +132,12 @@ export default {
                   displayName: this.nombres,
                 })
                 .then(() => {
-                  this.ruc = "";
-                  this.nombres = "";
-                  this.email = "";
-                  this.celular = "";
-                  this.contraseña = "";
-                  this.$router.push({ name: "SuccessRegister" });
+                  this.ruc = '';
+                  this.nombres = '';
+                  this.email = '';
+                  this.celular = '';
+                  this.contraseña = '';
+                  this.$router.push({ name: 'SuccessRegister' });
                 })
                 .catch((err) => {
                   this.error = err.message;
@@ -148,7 +148,7 @@ export default {
             this.error = err.message;
           });
       } else {
-        this.error = "Todos los campos son requeridos.";
+        this.error = 'Todos los campos son requeridos.';
       }
     },
   },
@@ -166,7 +166,7 @@ export default {
   padding-block: 0px;
 }
 
-.inputPrice input[type="number"] {
+.inputPrice input[type='number'] {
   -moz-appearance: textfield;
 }
 .inputPrice input::-webkit-outer-spin-button,

@@ -9,15 +9,17 @@
       >
       <v-spacer></v-spacer>
       <template>
-        <div class="item-menu">Hola {{ user.displayName || user.email }} !</div>
+        <div class="item-menu">
+          Hola, <b>{{ user.displayName || user.email }}</b> !
+        </div>
       </template>
 
       <div class="item-menu">
-        <router-link to="./myaccount">
-          <v-avatar color="primary">
-            <v-icon dark>mdi-account</v-icon>
+        <v-btn fab small color="primary" outlined @click.prevent="logout">
+          <v-avatar>
+            <v-icon color="primary">mdi-logout</v-icon>
           </v-avatar>
-        </router-link>
+        </v-btn>
       </div>
     </v-app-bar>
     <v-navigation-drawer app v-model="drawer" temporary>
@@ -25,9 +27,9 @@
         <v-list-item>
           <v-layout column align-start> Menu </v-layout>
           <v-layout column align-end>
-            <v-app-bar-nav-icon
-              @click.stop="drawer = !drawer"
-            ></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"
+              ><v-icon color="primary">mdi-menu</v-icon></v-app-bar-nav-icon
+            >
           </v-layout>
         </v-list-item>
         <br />

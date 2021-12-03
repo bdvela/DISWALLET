@@ -3,590 +3,704 @@
     <Navbar></Navbar>
     <v-card rounded="lg" elevation="12"
       ><v-parallax class="parallax text-center" height="400"
-        ><h1 class="text-h2">Descuento de Facturas</h1></v-parallax
-      >
+        ><h1 class="text-h2">
+          Descuento de <b>Facturas</b>
+
+          <v-tooltip right color="rgba(248, 248, 248, 0.9)" max-width="300px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                dense
+                small
+                color="rgba(248, 248, 248, 0.9)"
+                v-bind="attrs"
+                v-on="on"
+                >mdi-information-outline</v-icon
+              ></template
+            >
+            <span class="tooltip"
+              >El descuento de facturas, es una herramienta de financiación que
+              ayuda a empresas a anticipar las cuentas por cobrar de sus
+              clientes.</span
+            >
+          </v-tooltip>
+        </h1>
+
+        <v-card-subtitle> <h2 class="text-h6"></h2></v-card-subtitle
+      ></v-parallax>
     </v-card>
+    <v-hover v-slot="{ hover }" close-delay="100">
+      <v-card
+        class="bills-card"
+        rounded="xl"
+        :elevation="hover ? 16 : 4"
+        :class="{ 'on-hover': hover }"
+      >
+        <v-card-title>
+          <h2>
+            Mis Facturas
+            <v-tooltip right max-width="300px" color="rgba(0, 0, 0, 0.7)">
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  dense
+                  small
+                  v-bind="attrs"
+                  v-on="on"
+                  color="rgba(0, 0, 0, 0.7)"
+                  >mdi-information-outline</v-icon
+                ></template
+              >
+              <span class="tooltip2"
+                >Una factura es un documento de carácter mercantil que refleja
+                la compraventa de un bien o la prestación de un servicio
+                determinado.</span
+              >
+            </v-tooltip>
+          </h2>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-text-field
+            class="my-2"
+            v-model="search"
+            outlined
+            rounded
+            dense
+            append-icon="mdi-magnify"
+            label="Buscar"
+            single-line
+            hide-details
+          ></v-text-field>
 
-    <v-card class="bills-card" elevation="4" rounded="xl">
-      <v-card-title>
-        <h2>Mis Facturas</h2>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
-        <v-spacer></v-spacer>
+          <!--DIALOG ADD BILLS-->
+          <v-row justify="center">
+            <!--CUADRO DE DIALOGO NUEVA FACTURA-->
 
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Buscar"
-          single-line
-          hide-details
-        ></v-text-field>
-        <v-spacer></v-spacer>
-
-        <!--DIALOG ADD BILLS-->
-        <v-row justify="center">
-          <!--CUADRO DE DIALOGO NUEVA FACTURA-->
-          <v-dialog v-model="dialog" max-width="100vh">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" fab v-bind="attrs" v-on="on">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </template>
-
-            <v-card class="card-dialog" rounded="xl" elevation="12">
-              <v-card-title class="justify-center">
-                <span class="text-h3 formtitle">NUEVA FACTURA</span>
-              </v-card-title>
-              <v-alert v-if="error" color="red" type="error">
-                {{ error }}
-              </v-alert>
-              <div class="switch-toggle">
-                <v-subheader class="PEN">PEN</v-subheader>
-                <v-switch
-                  v-model="kindOfMoney"
-                  label="USD"
-                  class="mt-2"
-                ></v-switch>
-              </div>
-              <v-card-text>
-                <v-form class="mt-12" @submit.prevent="addBill">
-                  <v-container class="container-forms">
-                    <v-row>
-                      <v-col class="col-register" cols="12" sm="6">
-                        <v-subheader>RUC</v-subheader>
-                        <v-text-field
-                          v-model="newBill.ruc"
-                          placeholder="RUC"
-                          autofocus
-                          filled
-                          rounded
-                          required
-                        ></v-text-field>
-                      </v-col>
-                      <v-col class="col-register" cols="12" sm="6">
-                        <v-subheader>Razón Social</v-subheader>
-                        <v-text-field
-                          v-model="newBill.empresa"
-                          placeholder="razón social"
-                          filled
-                          rounded
-                        ></v-text-field>
-                      </v-col>
-                      <v-col class="col-register" cols="12" sm="6">
-                        <v-subheader>Fecha de emisión</v-subheader>
-                        <v-text-field
-                          v-model="newBill.emision"
-                          placeholder="dd/mm/aaaa"
-                          type="date"
-                          filled
-                          rounded
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col class="col-register" cols="12" sm="6">
-                        <v-subheader>Fecha de pago</v-subheader>
-                        <v-text-field
-                          v-model="newBill.fechapago"
-                          placeholder="dd/mm/aaaa"
-                          type="date"
-                          filled
-                          rounded
-                        ></v-text-field>
-                      </v-col>
-                      <v-col class="col-register" cols="12" sm="6">
-                        <v-subheader>Monto Total</v-subheader>
-                        <v-text-field
-                          v-model="newBill.monto"
-                          placeholder="0.00"
-                          type="number"
-                          filled
-                          rounded
-                        ></v-text-field>
-                      </v-col>
-                      <v-col class="col-register" cols="12" sm="6">
-                        <v-subheader>Retención</v-subheader>
-                        <v-text-field
-                          v-model="newBill.retencion"
-                          placeholder="0.00"
-                          type="number"
-                          filled
-                          rounded
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <div class="text-center mt-12">
-                      <v-btn color="primary" rounded x-large type="submit"
-                        >Registrar Factura</v-btn
-                      >
-                    </div>
-                  </v-container>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-
-          <v-dialog v-model="dialog3" max-width="100vh">
-            <template v-slot:activator="{ on, attrs }">
-              <div color="primary" fab v-bind="attrs" v-on="on" disabled></div>
-            </template>
-            <v-card class="results-dialog" rounded="xl" elevation="12">
-              <v-card-title class="justify-center">
-                <span class="display-3">RESULTADOS</span>
-              </v-card-title>
-              <v-card-text class="justify-center">
-                <table cellspacing="15">
-                  <tbody>
-                    <br />
-                    <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Tasa Efectiva anual (Sin Costes):
-                      </td>
-                      <td class="resultado">
-                        <b> {{ newtcea.tea }}% </b>
-                      </td>
-                      <td style="height: 23px">Costes Iniciales Totales:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.ci }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Número de días transcurridos:
-                      </td>
-                      <td class="resultado">
-                        <b>{{ newtcea.nd }}</b>
-                      </td>
-                      <td style="height: 23px">Valor Neto:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.vnet }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Tasa Efectiva a {{ newtcea.nd }} días:
-                      </td>
-                      <td class="resultado">
-                        <b>{{ newtcea.te }}%</b>
-                      </td>
-                      <td style="height: 23px">Valor Total a Recibir:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.vr }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Tasa Descontada a {{ newtcea.nd }} días:
-                      </td>
-                      <td class="resultado">
-                        <b>{{ newtcea.d }}%</b>
-                      </td>
-                      <td style="height: 23px">Costes Finales Totales:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.cf }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">Descuento por días:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea._d }}</b>
-                      </td>
-                      <td style="height: 23px">Valor Total a Entregar:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.ve }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">Retención:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.retencion }}</b>
-                      </td>
-                      <td style="height: 23px">
-                        <b>Tasa de Coste Efectivo Anual (TCEA): </b>
-                      </td>
-                      <td class="resultado">
-                        <b>{{ newtcea.tcea }}%</b>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </v-card-text>
-              <v-card-actions class="justify-center">
+            <v-dialog v-model="dialog" max-width="100vh">
+              <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                  large
-                  rounded
                   color="primary"
-                  width="150px"
-                  @click="closeresults()"
+                  fab
+                  v-bind="attrs"
+                  v-on="on"
+                  class="my-2"
                 >
-                  Confirmar
+                  <v-icon>mdi-plus</v-icon>
                 </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+              </template>
 
-          <v-dialog v-model="dialog4" max-width="100vh">
-            <template v-slot:activator="{ on, attrs }">
-              <div color="primary" fab v-bind="attrs" v-on="on" disabled></div>
-            </template>
-            <v-card class="results-dialog" rounded="xl" elevation="12">
-              <v-card-title class="justify-center">
-                <span class="display-3">RESULTADOS</span>
-              </v-card-title>
-              <v-card-text class="justify-center">
-                <table cellspacing="15">
-                  <tbody>
-                    <br />
-                    <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Tasa Efectiva anual (Sin Costes):
-                      </td>
-                      <td class="resultado">
-                        <b> {{ newtcea.tea }}% </b>
-                      </td>
+              <v-card class="card-dialog" rounded="xl" elevation="12">
+                <v-card-title class="justify-center">
+                  <span class="text-title text-center">NUEVA FACTURA</span>
+                </v-card-title>
 
-                      <td style="height: 23px">Costes Iniciales Totales:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.ci }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Número de días transcurridos:
-                      </td>
-                      <td class="resultado">
-                        <b>{{ newtcea.nd }}</b>
-                      </td>
-                      <td style="height: 23px">Valor Neto:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.vnet }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Tasa Efectiva a {{ newtcea.nd }} días:
-                      </td>
-                      <td class="resultado">
-                        <b>{{ newtcea.te }}%</b>
-                      </td>
-                      <td style="height: 23px">Valor Total a Recibir:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.vr }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">
-                        Tasa Descontada a {{ newtcea.nd }} días:
-                      </td>
-                      <td class="resultado">
-                        <b>{{ newtcea.d }}%</b>
-                      </td>
-                      <td style="height: 23px">Costes Finales Totales:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.cf }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">Descuento por días:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea._d }}</b>
-                      </td>
-                      <td style="height: 23px">Valor Total a Entregar:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.ve }}</b>
-                      </td>
-                    </tr>
-                    <tr style="height: 23px">
-                      <td style="height: 23px">Retención:</td>
-                      <td class="resultado">
-                        <b>{{ newtcea.retencion }}</b>
-                      </td>
-                      <td style="height: 23px">
-                        <b>Tasa de Coste Efectivo Anual (TCEA): </b>
-                      </td>
-                      <td class="resultado">
-                        <b>{{ newtcea.tcea }}%</b>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-
-          <!--CUADRO DE DIALOGO CALCULTO TCEA-->
-          <v-dialog v-model="dialog2" max-width="100vh">
-            <template v-slot:activator="{ on, attrs }">
-              <div color="primary" fab v-bind="attrs" v-on="on" disabled></div>
-            </template>
-
-            <v-card class="tcea-dialog" rounded="xl" elevation="12">
-              <v-card-title class="justify-center">
-                <span class="text-h3">CALCULAR TCEA</span>
-              </v-card-title>
-              <v-alert v-if="error" color="red" type="error">
-                {{ error }}
-              </v-alert>
-              <v-card-text>
-                <v-form class="mt-12" @submit.prevent="showTCEA">
-                  <v-container class="container-forms">
+                <v-card-text>
+                  <v-form class="mt-12" @submit.prevent="addBill">
                     <v-row>
-                      <v-col class="col-register" cols="12" sm="4">
-                        <h3>Tasa y plazo</h3>
-                        <v-subheader>Días por año</v-subheader>
-                        <v-select
-                          :items="days"
-                          v-model="newtcea.dias"
-                          placeholder="días por año"
-                          autofocus
-                          filled
-                          rounded
-                          required
-                        ></v-select>
-                      </v-col>
-
-                      <v-col class="col-register" cols="12" sm="4">
-                        <h3>Costes / Gastos</h3>
-                        <v-subheader>Gastos iniciales </v-subheader>
-                        <v-select
-                          :items="gastos"
-                          v-model="newtcea.gastosIniciales"
-                          placeholder="motivo"
-                          filled
-                          rounded
-                        ></v-select>
-                      </v-col>
-
-                      <v-col class="col-register" cols="12" sm="4">
-                        <h3>Datos de la factura</h3>
-                        <v-subheader>Fecha de emisión</v-subheader>
-                        <v-text-field
-                          v-model="newtcea.emision"
-                          outlined
-                          disabled
-                          filled
-                          type="date"
-                          rounded
-                          required
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col class="col-register" cols="12" sm="4">
-                        <v-subheader>Plazo de tasa</v-subheader>
-                        <v-select
-                          :items="plazo"
-                          v-model="newtcea.plazo"
-                          placeholder="plazo de tasa"
-                          filled
-                          rounded
-                          required
-                        ></v-select>
-                      </v-col>
-
-                      <v-col class="col-register" cols="12" sm="4">
-                        <v-subheader>Valor total en efectivo</v-subheader>
-                        <v-text-field
-                          v-model="newtcea.valorEfectivoGI"
-                          placeholder="gastos iniciales"
-                          type="number"
-                          filled
-                          rounded
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col class="col-register" cols="12" sm="4">
-                        <v-subheader>Fecha de pago</v-subheader>
-                        <v-text-field
-                          v-model="newtcea.fechapago"
-                          outlined
-                          disabled
-                          filled
-                          type="date"
-                          rounded
-                          required
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col class="col-register" cols="12" sm="4">
-                        <v-subheader>Tasa</v-subheader>
-                        <v-row class="formtasa">
-                          <v-col class="col-register" cols="12" sm="6"
-                            ><v-radio-group v-model="newtcea.tipotasa">
-                              <v-radio
-                                label="Efectiva"
-                                value="Efectiva"
-                              ></v-radio>
-                              <v-radio
-                                label="Nominal"
-                                value="Nominal"
-                              ></v-radio>
-                            </v-radio-group>
-                          </v-col>
-                          <v-col class="col-register" cols="12" sm="6">
-                            <v-text-field
-                              v-model="newtcea.tasa"
-                              type="number"
-                              placeholder="(%)"
-                              filled
-                              rounded
-                            ></v-text-field>
-                          </v-col>
+                      <v-col cols="12" sm="6"></v-col>
+                      <v-col cols="12" sm="6">
+                        <v-row>
+                          <v-col> </v-col>
+                          <v-col
+                            ><v-subheader class="align-center ml-12"
+                              >PEN</v-subheader
+                            ></v-col
+                          >
                           <v-col>
-                            <div v-if="newtcea.tipotasa == 'Nominal'">
-                              <v-subheader
-                                >Periodo de Capitalización</v-subheader
-                              >
-                              <v-select
-                                :items="capitalizacion"
-                                v-model="newtcea.capitalizacion"
-                                placeholder="per. de capitalización"
-                                filled
-                                rounded
-                                required
-                              ></v-select>
-                            </div>
+                            <v-switch
+                              inset
+                              v-model="kindOfMoney"
+                              label="USD"
+                              class="mr-6 mt-2"
+                            ></v-switch>
                           </v-col>
                         </v-row>
                       </v-col>
-                      <v-col class="col-register" cols="12" sm="4">
-                        <v-divider></v-divider>
-                        <v-subheader>Gastos finales</v-subheader>
-                        <v-select
-                          :items="gastos"
-                          v-model="newtcea.gastosFinales"
-                          placeholder="motivo"
-                          filled
-                          rounded
-                        ></v-select>
-                      </v-col>
-
-                      <v-col class="col-register" cols="12" sm="4">
-                        <v-subheader>Total facturado</v-subheader>
-                        <v-text-field
-                          v-model="newtcea.monto"
-                          outlined
-                          disabled
-                          filled
-                          rounded
-                          required
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col class="col-register" cols="12" sm="4">
-                        <v-subheader>Fecha de descuento</v-subheader>
-                        <v-text-field
-                          v-model="newtcea.fechaDescuento"
-                          placeholder="dd/mm/aaaa"
-                          type="date"
-                          filled
-                          rounded
-                        ></v-text-field>
-                      </v-col>
-                      <v-col class="col-register" cols="12" sm="4">
-                        <v-subheader>Valor total en efectivo</v-subheader>
-                        <v-text-field
-                          v-model="newtcea.valorEfectivoGF"
-                          placeholder="gastos finales"
-                          type="number"
-                          filled
-                          rounded
-                        ></v-text-field>
-                      </v-col>
-                      <v-col class="col-register" cols="12" sm="4">
-                        <v-subheader>Retención</v-subheader>
-                        <v-text-field
-                          v-model="newtcea.retencion"
-                          outlined
-                          disabled
-                          filled
-                          rounded
-                          required
-                        ></v-text-field>
-                      </v-col>
                     </v-row>
-                    <div class="text-center mt-2">
-                      <v-btn color="primary" rounded x-large type="submit"
-                        >Calcular</v-btn
-                      >
-                    </div>
-                  </v-container>
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-        </v-row>
-      </v-card-title>
-      <v-divider light></v-divider>
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        :search="search"
-        hide-default-footer
-        items-per-page="50"
+                    <v-alert v-if="error" color="red" type="error">
+                      {{ error }}
+                    </v-alert>
+                    <v-container class="container-forms">
+                      <v-row>
+                        <v-col class="col-register" cols="12" sm="6">
+                          <v-subheader>RUC</v-subheader>
+                          <v-text-field
+                            v-model="newBill.ruc"
+                            placeholder="RUC"
+                            autofocus
+                            filled
+                            rounded
+                          ></v-text-field>
+                        </v-col>
+                        <v-col class="col-register" cols="12" sm="6">
+                          <v-subheader>Razón Social</v-subheader>
+                          <v-text-field
+                            v-model="newBill.empresa"
+                            placeholder="razón social"
+                            filled
+                            rounded
+                          ></v-text-field>
+                        </v-col>
+                        <v-col class="col-register" cols="12" sm="6">
+                          <v-subheader>Fecha de emisión</v-subheader>
+                          <v-text-field
+                            v-model="newBill.emision"
+                            placeholder="dd/mm/aaaa"
+                            type="date"
+                            filled
+                            rounded
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col class="col-register" cols="12" sm="6">
+                          <v-subheader>Fecha de pago</v-subheader>
+                          <v-text-field
+                            v-model="newBill.fechapago"
+                            placeholder="dd/mm/aaaa"
+                            type="date"
+                            filled
+                            rounded
+                          ></v-text-field>
+                        </v-col>
+                        <v-col class="col-register" cols="12" sm="6">
+                          <v-subheader>Monto Total</v-subheader>
+                          <v-text-field
+                            v-model="newBill.monto"
+                            placeholder="0.00"
+                            type="number"
+                            filled
+                            rounded
+                          ></v-text-field>
+                        </v-col>
+                        <v-col class="col-register" cols="12" sm="6">
+                          <v-subheader>Retención</v-subheader>
+                          <v-text-field
+                            v-model="newBill.retencion"
+                            placeholder="0.00"
+                            type="number"
+                            filled
+                            rounded
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <div class="text-center mt-12">
+                        <v-btn color="primary" rounded x-large type="submit"
+                          >Registrar Factura</v-btn
+                        >
+                      </div>
+                    </v-container>
+                  </v-form>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+
+            <v-dialog v-model="dialog3" max-width="100vh">
+              <template v-slot:activator="{ on, attrs }">
+                <div
+                  color="primary"
+                  fab
+                  v-bind="attrs"
+                  v-on="on"
+                  disabled
+                ></div>
+              </template>
+              <v-card class="results-dialog" rounded="xl" elevation="12">
+                <v-card-title class="justify-center">
+                  <span class="text-h2 text-center">RESULTADOS</span>
+                </v-card-title>
+                <v-card-text class="justify-center">
+                  <table cellspacing="15">
+                    <tbody>
+                      <br />
+                      <tr style="height: 23px">
+                        <td style="height: 23px">
+                          Tasa Efectiva anual (Sin Costes):
+                        </td>
+                        <td class="resultado">
+                          <b> {{ newtcea.tea }}% </b>
+                        </td>
+                        <td style="height: 23px">Costes Iniciales Totales:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.ci }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">
+                          Número de días transcurridos:
+                        </td>
+                        <td class="resultado">
+                          <b>{{ newtcea.nd }}</b>
+                        </td>
+                        <td style="height: 23px">Valor Neto:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.vnet }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">
+                          Tasa Efectiva a {{ newtcea.nd }} días:
+                        </td>
+                        <td class="resultado">
+                          <b>{{ newtcea.te }}%</b>
+                        </td>
+                        <td style="height: 23px">Valor Total a Recibir:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.vr }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">
+                          Tasa Descontada a {{ newtcea.nd }} días:
+                        </td>
+                        <td class="resultado">
+                          <b>{{ newtcea.d }}%</b>
+                        </td>
+                        <td style="height: 23px">Costes Finales Totales:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.cf }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">Descuento por días:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea._d }}</b>
+                        </td>
+                        <td style="height: 23px">Valor Total a Entregar:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.ve }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">Retención:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.retencion }}</b>
+                        </td>
+                        <td style="height: 23px">
+                          <b>Tasa de Coste Efectivo Anual (TCEA): </b>
+                        </td>
+                        <td class="resultado">
+                          <span>{{ newtcea.tcea }}%</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </v-card-text>
+                <v-card-actions class="justify-center">
+                  <v-btn
+                    large
+                    rounded
+                    color="primary"
+                    width="150px"
+                    @click="closeresults()"
+                  >
+                    Confirmar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
+            <v-dialog v-model="dialog4" max-width="100vh">
+              <template v-slot:activator="{ on, attrs }">
+                <div
+                  color="primary"
+                  fab
+                  v-bind="attrs"
+                  v-on="on"
+                  disabled
+                ></div>
+              </template>
+              <v-card class="results-dialog" rounded="xl" elevation="12">
+                <v-card-title class="justify-center">
+                  <span class="text-h2">RESULTADOS</span>
+                </v-card-title>
+                <v-card-text class="justify-center">
+                  <table cellspacing="15">
+                    <tbody>
+                      <br />
+                      <tr style="height: 23px">
+                        <td style="height: 23px">
+                          <v-tooltip
+                            left
+                            color="rgba(0, 0, 0, 0.7)"
+                            max-width="300px"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <div v-bind="attrs" v-on="on" class="result-info">
+                                Tasa Efectiva anual (Sin Costes):
+                              </div></template
+                            >
+                            <span class="tooltip2"
+                              >La TEA calcula el costo o valor de interés
+                              esperado en un plazo de 360 o 365 días.</span
+                            >
+                          </v-tooltip>
+                        </td>
+                        <td class="resultado">
+                          <b> {{ newtcea.tea }}% </b>
+                        </td>
+
+                        <td style="height: 23px">Costes Iniciales Totales:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.ci }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">
+                          Número de días transcurridos:
+                        </td>
+
+                        <td class="resultado">
+                          <b>{{ newtcea.nd }}</b>
+                        </td>
+                        <td style="height: 23px">Costes Finales Totales:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.cf }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">
+                          Tasa Efectiva a {{ newtcea.nd }} días:
+                        </td>
+                        <td class="resultado">
+                          <b>{{ newtcea.te }}%</b>
+                        </td>
+                        <td style="height: 23px">Valor Total a Recibir:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.vr }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">
+                          Tasa Descontada a {{ newtcea.nd }} días:
+                        </td>
+                        <td class="resultado">
+                          <b>{{ newtcea.d }}%</b>
+                        </td>
+                        <td style="height: 23px">Valor Neto:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.vnet }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">Descuento por días:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea._d }}</b>
+                        </td>
+                        <td style="height: 23px">Valor Total a Entregar:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.ve }}</b>
+                        </td>
+                      </tr>
+                      <tr style="height: 23px">
+                        <td style="height: 23px">Retención:</td>
+                        <td class="resultado">
+                          <b>{{ newtcea.retencion }}</b>
+                        </td>
+                        <td style="height: 23px">
+                          <b>Tasa de Coste Efectivo Anual (TCEA): </b>
+                        </td>
+                        <td class="resultado">
+                          <span>{{ newtcea.tcea }}%</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+
+            <!--CUADRO DE DIALOGO CALCULTO TCEA-->
+            <v-dialog v-model="dialog2" max-width="100vh">
+              <template v-slot:activator="{ on, attrs }">
+                <div
+                  color="primary"
+                  fab
+                  v-bind="attrs"
+                  v-on="on"
+                  disabled
+                ></div>
+              </template>
+
+              <v-card class="tcea-dialog" rounded="xl" elevation="12">
+                <v-card-title class="justify-center">
+                  <span class="text-title text-center">CALCULAR TCEA</span>
+                </v-card-title>
+                <v-alert v-if="error" color="red" type="error">
+                  {{ error }}
+                </v-alert>
+                <v-card-text>
+                  <v-form class="mt-12" @submit.prevent="showTCEA">
+                    <v-container class="container-forms">
+                      <v-row>
+                        <v-col class="col-register" cols="12" sm="4">
+                          <h3>Tasa y plazo</h3>
+                          <v-subheader>Días por año</v-subheader>
+                          <v-select
+                            :items="days"
+                            v-model="newtcea.dias"
+                            placeholder="días por año"
+                            autofocus
+                            filled
+                            rounded
+                            required
+                          ></v-select>
+                        </v-col>
+
+                        <v-col class="col-register" cols="12" sm="4">
+                          <h3>Costes / Gastos</h3>
+                          <v-subheader>Gastos iniciales </v-subheader>
+                          <v-select
+                            :items="gastos"
+                            v-model="newtcea.gastosIniciales"
+                            placeholder="motivo"
+                            filled
+                            rounded
+                          ></v-select>
+                        </v-col>
+
+                        <v-col class="col-register" cols="12" sm="4">
+                          <h3>Datos de la factura</h3>
+                          <v-subheader>Fecha de emisión</v-subheader>
+                          <v-text-field
+                            v-model="newtcea.emision"
+                            outlined
+                            disabled
+                            filled
+                            type="date"
+                            rounded
+                            required
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col class="col-register" cols="12" sm="4">
+                          <v-subheader>Plazo de tasa</v-subheader>
+                          <v-select
+                            :items="plazo"
+                            v-model="newtcea.plazo"
+                            placeholder="plazo de tasa"
+                            filled
+                            rounded
+                            required
+                          ></v-select>
+                        </v-col>
+
+                        <v-col class="col-register" cols="12" sm="4">
+                          <v-subheader>Valor total en efectivo</v-subheader>
+                          <v-text-field
+                            v-model="newtcea.valorEfectivoGI"
+                            placeholder="gastos iniciales"
+                            type="number"
+                            filled
+                            rounded
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col class="col-register" cols="12" sm="4">
+                          <v-subheader>Fecha de pago</v-subheader>
+                          <v-text-field
+                            v-model="newtcea.fechapago"
+                            outlined
+                            disabled
+                            filled
+                            type="date"
+                            rounded
+                            required
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col class="col-register" cols="12" sm="4">
+                          <v-subheader>Tasa</v-subheader>
+                          <v-row class="formtasa">
+                            <v-col class="col-register" cols="12" sm="6"
+                              ><v-radio-group v-model="newtcea.tipotasa">
+                                <v-radio
+                                  label="Efectiva"
+                                  value="Efectiva"
+                                ></v-radio>
+                                <v-radio
+                                  label="Nominal"
+                                  value="Nominal"
+                                ></v-radio>
+                              </v-radio-group>
+                            </v-col>
+                            <v-col class="col-register" cols="12" sm="6">
+                              <v-text-field
+                                v-model="newtcea.tasa"
+                                type="number"
+                                placeholder="(%)"
+                                filled
+                                rounded
+                              ></v-text-field>
+                            </v-col>
+                            <v-col>
+                              <div v-if="newtcea.tipotasa == 'Nominal'">
+                                <v-subheader
+                                  >Periodo de Capitalización</v-subheader
+                                >
+                                <v-select
+                                  :items="capitalizacion"
+                                  v-model="newtcea.capitalizacion"
+                                  placeholder="per. de capitalización"
+                                  filled
+                                  rounded
+                                  required
+                                ></v-select>
+                              </div>
+                            </v-col>
+                          </v-row>
+                        </v-col>
+                        <v-col class="col-register" cols="12" sm="4">
+                          <v-divider></v-divider>
+                          <v-subheader>Gastos finales</v-subheader>
+                          <v-select
+                            :items="gastos"
+                            v-model="newtcea.gastosFinales"
+                            placeholder="motivo"
+                            filled
+                            rounded
+                          ></v-select>
+                        </v-col>
+
+                        <v-col class="col-register" cols="12" sm="4">
+                          <v-subheader>Total facturado</v-subheader>
+                          <v-text-field
+                            v-model="newtcea.monto"
+                            outlined
+                            disabled
+                            filled
+                            rounded
+                            required
+                          ></v-text-field>
+                        </v-col>
+
+                        <v-col class="col-register" cols="12" sm="4">
+                          <v-subheader>Fecha de descuento</v-subheader>
+                          <v-text-field
+                            v-model="newtcea.fechaDescuento"
+                            placeholder="dd/mm/aaaa"
+                            type="date"
+                            filled
+                            rounded
+                          ></v-text-field>
+                        </v-col>
+                        <v-col class="col-register" cols="12" sm="4">
+                          <v-subheader>Valor total en efectivo</v-subheader>
+                          <v-text-field
+                            v-model="newtcea.valorEfectivoGF"
+                            placeholder="gastos finales"
+                            type="number"
+                            filled
+                            rounded
+                          ></v-text-field>
+                        </v-col>
+                        <v-col class="col-register" cols="12" sm="4">
+                          <v-subheader>Retención</v-subheader>
+                          <v-text-field
+                            v-model="newtcea.retencion"
+                            outlined
+                            disabled
+                            filled
+                            rounded
+                            required
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <div class="text-center mt-2">
+                        <v-btn color="primary" rounded x-large type="submit"
+                          >Calcular</v-btn
+                        >
+                      </div>
+                    </v-container>
+                  </v-form>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+          </v-row>
+        </v-card-title>
+        <v-divider light></v-divider>
+        <v-data-table
+          :headers="headers"
+          :items="items"
+          :search="search"
+          hide-default-footer
+          items-per-page="50"
+        >
+          <template slot="no-data">
+            <div>No cuentas con ninguna factura. Crea una rápido y fácil.</div>
+          </template>
+          <template #item.tcea="{ item }">
+            <div v-if="item.tcea == 0">
+              <v-btn
+                rounded
+                small
+                color="primary"
+                @click.stop="getdata(item.id)"
+                >Calcular</v-btn
+              >
+            </div>
+            <div v-else>
+              <a @click.stop="getresults(item.id)">{{ item.tcea }}</a>
+            </div>
+          </template>
+        </v-data-table>
+      </v-card>
+    </v-hover>
+    <v-hover v-slot="{ hover }" close-delay="100">
+      <v-card
+        class="wallet-card my-12"
+        :elevation="hover ? 16 : 4"
+        :class="{ 'on-hover': hover }"
+        rounded="xl"
+        v-if="id > 0"
       >
-        <template slot="no-data">
-          <div>No cuentas con ninguna factura. Crea una rápido y fácil.</div>
-        </template>
-        <template #item.tcea="{ item }">
-          <div v-if="item.tcea == 0">
-            <v-btn rounded small color="primary" @click.stop="getdata(item.id)"
-              >Calcular</v-btn
-            >
-          </div>
-          <div v-else>
-            <a @click.stop="getresults(item.id)">{{ item.tcea }}</a>
-          </div>
-        </template>
-      </v-data-table>
-    </v-card>
-    <v-card class="wallet-card" elevation="4" rounded="xl" v-if="id > 0">
-      <v-card-title>
-        <v-spacer></v-spacer>
-        <h2>Cartera de Facturas</h2>
-        <v-spacer></v-spacer>
-        <v-btn fab rounded color="primary" @click="closeresults()">
-          <v-icon>mdi-refresh</v-icon>
-        </v-btn>
-      </v-card-title>
-      <v-card-subtitle> </v-card-subtitle>
-      <v-divider light></v-divider>
-      <v-card-text class="table">
-        <v-row>
-          <v-col cols="12" sm="12">
-            <table cellspacing="15">
-              <tbody>
-                <br />
-                <tr style="height: 23px">
-                  <td style="height: 23px  width: 50%">
-                    Valor Total a Recibir por la Cartera (VR):
-                  </td>
-                  <td class="resultado" style="height: 23px  width: 60%">
-                    <b> {{ vr_wallet }}</b>
-                  </td>
-                </tr>
-                <tr style="height: 23px">
-                  <td style="height: 23px width: 50%">
-                    Tasa de Coste Efectiva Anual de la Cartera (TCEA):
-                  </td>
-                  <td class="resultado" style="width: 60%">
-                    <b> {{ tcea_wallet }}</b>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
+        <v-card-title>
+          <v-spacer></v-spacer>
+          <h2>Cartera de Facturas</h2>
+          <v-spacer></v-spacer>
+          <v-btn fab rounded color="primary" @click="closeresults()">
+            <v-icon>mdi-refresh</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-subtitle> </v-card-subtitle>
+        <v-divider light></v-divider>
+        <v-card-text class="table">
+          <v-row>
+            <v-col cols="12" sm="12">
+              <table cellspacing="15">
+                <tbody>
+                  <br />
+                  <tr style="height: 23px">
+                    <td style="height: 23px  width: 50%">
+                      Valor Total a Recibir por la Cartera (VR):
+                    </td>
+                    <td class="resultado" style="height: 23px  width: 60%">
+                      <b> {{ vr_wallet }}</b>
+                    </td>
+                  </tr>
+                  <tr style="height: 23px">
+                    <td style="height: 23px width: 50%">
+                      Tasa de Coste Efectiva Anual de la Cartera (TCEA):
+                    </td>
+                    <td class="resultado" style="width: 60%">
+                      <b> {{ tcea_wallet }}</b>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-hover>
   </div>
 </template>
 
@@ -620,6 +734,7 @@ export default {
           align: 'start',
           value: 'id',
         },
+        { text: 'RUC', value: 'ruc' },
         { text: 'Nombre de la empresa', value: 'empresa' },
         { text: 'Fecha de emisión', value: 'emision' },
         { text: 'Fecha de pago', value: 'fechapago' },
@@ -919,7 +1034,6 @@ export default {
       console.log('Monto: ', monto);
       console.log('CGI: ', cgi);
       console.log('CGF: ', cgf);
-
       console.log('__________');
       /* Dias por año */
       let diasporaño = parseInt(dias);
@@ -933,7 +1047,6 @@ export default {
       console.log('FechaDescuento: ', fechaDescuento);
       console.log('Fecha Diferencia: ', fechaDiferencia);
       console.log('td: ', td);
-
       let cap = Number;
       switch (capitalizacion) {
         case 'Diario':
@@ -960,13 +1073,11 @@ export default {
         case 'Anual':
           cap = 12;
           break;
-
         default:
           cap = 12;
           break;
       }
       console.log('cap: ', cap);
-
       let plaz = Number;
       switch (plazo) {
         case 'Diario':
@@ -993,7 +1104,6 @@ export default {
         case 'Anual':
           plaz = 12;
           break;
-
         default:
           plaz = 12;
           break;
@@ -1013,7 +1123,6 @@ export default {
           ) - 1;
       }
       console.log('te: ', te);
-
       let re = parseFloat(retencion);
       /* Descuento */
       let tasadcto = te / (1 + te);
@@ -1037,7 +1146,6 @@ export default {
       /* TCEA */
       let tcea = (Math.pow(ve / vr, diasporaño / td) - 1) * 100;
       console.log('tcea: ', tcea);
-
       this.newtcea.tea = tasa;
       this.newtcea.ci = tci;
       this.newtcea.nd = td;
@@ -1137,8 +1245,7 @@ export default {
 <style scoped>
 .bills-card {
   padding: 20px;
-  margin: 50px;
-
+  margin: 5%;
   margin-top: -100px;
 }
 
@@ -1148,6 +1255,9 @@ export default {
   width: 50%;
 }
 
+.text-title {
+  font-size: 200%;
+}
 .col-register {
   padding-block: 0px;
 }
@@ -1162,14 +1272,6 @@ export default {
   padding: 3%;
 }
 
-.table {
-  justify-content: center;
-  justify-items: center;
-  justify-self: center;
-  align-content: center;
-  align-items: center;
-  align-self: center;
-}
 .results-dialog {
   width: 100vh;
   padding: 5%;
@@ -1180,19 +1282,23 @@ export default {
   align-items: flex-end;
 }
 
-.switch-toggle {
-  position: absolute;
+/* .switch-toggle {
+  position: fixed;
   display: flex;
-  left: 80%;
-}
+} */
 
 .resultado {
   padding: 10px;
-  border: 1px solid black;
   border-radius: 10px;
-  border-collapse: collapse;
   text-align: right;
   background-color: rgb(247, 247, 247);
+}
+
+.tooltip {
+  color: black;
+}
+.tooltip2 {
+  color: white;
 }
 
 .PEN {
