@@ -21,11 +21,11 @@
               <v-form class="mt-6" @submit.prevent="register">
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="col-register">
                       <v-subheader>RUC</v-subheader>
                       <v-text-field
                         v-model="ruc"
-                        outlined
+                        filled
                         rounded
                         autofocus
                         placeholder="RUC"
@@ -33,22 +33,22 @@
                         color="primary accent-3"
                       />
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="col-register">
                       <v-subheader>Nombre y Apellido</v-subheader>
                       <v-text-field
                         v-model="nombres"
-                        outlined
+                        filled
                         rounded
                         placeholder="nombre y apellido"
                         type="text"
                         color="primary accent-3"
                       />
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" class="col-register">
                       <v-subheader>Email</v-subheader>
                       <v-text-field
                         v-model="email"
-                        outlined
+                        filled
                         rounded
                         placeholder="email"
                         type="email"
@@ -59,7 +59,7 @@
                       <v-subheader>Celular</v-subheader>
                       <v-text-field
                         v-model="celular"
-                        outlined
+                        filled
                         rounded
                         placeholder="celular"
                         type="phonenumber"

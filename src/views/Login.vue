@@ -31,7 +31,7 @@
                 <v-text-field
                   v-model="email"
                   rounded
-                  outlined
+                  filled
                   autofocus
                   label="Email"
                   type="text"

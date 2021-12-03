@@ -326,7 +326,29 @@
                               </tr>
                               <tr>
                                 <td>
-                                  <b>Tasa de Coste Efectivo Anual (TCEA): </b>
+                                  <v-tooltip
+                                    bottom
+                                    color="rgba(0, 0, 0, 0.7)"
+                                    max-width="300px"
+                                  >
+                                    <template v-slot:activator="{ on, attrs }">
+                                      <div
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        class="result-info"
+                                      >
+                                        <b
+                                          >Tasa de Coste Efectivo Anual (TCEA):
+                                        </b>
+                                      </div></template
+                                    >
+                                    <span class="tooltip2"
+                                      >La TCEA refleja el costo total de
+                                      crédito, porque incluye además de la tasa
+                                      de interés, las comisiones y gastos que
+                                      los consumidores deben asumir.</span
+                                    >
+                                  </v-tooltip>
                                 </td>
                                 <td class="resultado">
                                   <span>{{ newtcea.tcea }}%</span>
@@ -376,28 +398,7 @@
                           <table cellspacing="15">
                             <br />
                             <tr>
-                              <td>
-                                <v-tooltip
-                                  left
-                                  color="rgba(0, 0, 0, 0.7)"
-                                  max-width="300px"
-                                >
-                                  <template v-slot:activator="{ on, attrs }">
-                                    <div
-                                      v-bind="attrs"
-                                      v-on="on"
-                                      class="result-info"
-                                    >
-                                      Tasa Efectiva anual (Sin Costes):
-                                    </div></template
-                                  >
-                                  <span class="tooltip2"
-                                    >La TEA calcula el costo o valor de interés
-                                    esperado en un plazo de 360 o 365
-                                    días.</span
-                                  >
-                                </v-tooltip>
-                              </td>
+                              <td>Tasa Efectiva anual (Sin Costes):</td>
                               <td class="resultado">
                                 <b> {{ newtcea.tea }}% </b>
                               </td>
@@ -477,7 +478,29 @@
                               </tr>
                               <tr>
                                 <td>
-                                  <b>Tasa de Coste Efectivo Anual (TCEA): </b>
+                                  <v-tooltip
+                                    bottom
+                                    color="rgba(0, 0, 0, 0.7)"
+                                    max-width="300px"
+                                  >
+                                    <template v-slot:activator="{ on, attrs }">
+                                      <div
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        class="result-info"
+                                      >
+                                        <b
+                                          >Tasa de Coste Efectivo Anual (TCEA):
+                                        </b>
+                                      </div></template
+                                    >
+                                    <span class="tooltip2"
+                                      >La TCEA refleja el costo total de
+                                      crédito, porque incluye además de la tasa
+                                      de interés, las comisiones y gastos que
+                                      los consumidores deben asumir.</span
+                                    >
+                                  </v-tooltip>
                                 </td>
                                 <td class="resultado">
                                   <span>{{ newtcea.tcea }}%</span>
@@ -749,36 +772,35 @@
           <v-spacer></v-spacer>
           <h2>Cartera de Facturas</h2>
           <v-spacer></v-spacer>
-          <v-btn fab rounded color="primary" @click="closeresults()">
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
         </v-card-title>
         <v-card-subtitle> </v-card-subtitle>
         <v-divider light></v-divider>
-        <v-card-text class="table">
+        <v-card-text>
           <v-row>
-            <v-col cols="12" sm="12">
-              <table cellspacing="15">
-                <tbody>
-                  <br />
-                  <tr style="height: 23px">
-                    <td style="height: 23px  width: 50%">
-                      Valor Total a Recibir por la Cartera (VR):
-                    </td>
-                    <td class="resultado" style="height: 23px  width: 60%">
-                      <b> {{ vr_wallet }}</b>
-                    </td>
-                  </tr>
-                  <tr style="height: 23px">
-                    <td style="height: 23px width: 50%">
-                      Tasa de Coste Efectiva Anual de la Cartera (TCEA):
-                    </td>
-                    <td class="resultado" style="width: 60%">
-                      <b> {{ tcea_wallet }}</b>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <v-col>
+              <v-row class="flex-column">
+                <table cellspacing="15">
+                  <tbody>
+                    <br />
+                    <tr style="height: 23px">
+                      <td style="height: 23px  width: 50%">
+                        Valor Total a Recibir por la Cartera (VR):
+                      </td>
+                      <td class="resultado" style="height: 23px  width: 60%">
+                        <b> {{ vr_wallet }}</b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="height: 23px width: 50%">
+                        Tasa de Coste Efectiva Anual de la Cartera (TCEA):
+                      </td>
+                      <td class="resultado" style="width: 60%">
+                        <span> {{ tcea_wallet }}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </v-row>
             </v-col>
           </v-row>
         </v-card-text>
@@ -1060,7 +1082,7 @@ export default {
       // let results = [];
       let tir = 0;
       console.log('tir: ', tir);
-      let tcea = 0;
+      let tcea = '';
       let suma_vr = 0;
       let suma_ve = 0;
       let suma_dias = 0;
@@ -1075,19 +1097,26 @@ export default {
             this.ve_wallet += parseFloat(result.ve);
             this.dias_wallet += parseFloat(result.dias);
             console.log(result.dias);
-            this.transcurridos_wallet += parseFloat(result.nd);
-            console.log(result.nd);
+            this.transcurridos_wallet += result.nd;
+            console.log('ND: ', result.nd);
             console.log('suma_vr: ', this.vr_wallet);
           }
         });
+        suma_vr = this.vr_wallet;
+        console.log('suma _ vrx : ', suma_vr);
+        suma_ve = this.ve_wallet;
+        suma_dias = this.dias_wallet;
+        suma_transcurridos = this.transcurridos_wallet;
+        tcea =
+          parseFloat(
+            Math.pow(suma_ve / suma_vr, suma_dias / suma_transcurridos) - 1
+          ) *
+            100 +
+          '%';
+
+        this.tcea_wallet = tcea;
       });
-      suma_vr = this.vr_wallet;
-      suma_ve = this.ve_wallet;
-      suma_dias = this.dias_wallet;
-      suma_transcurridos = this.transcurridos_wallet;
-      this.tcea_wallet = parseFloat(
-        Math.pow(suma_ve / suma_vr, suma_dias / suma_transcurridos) - 1
-      );
+
       console.log(suma_vr);
       console.log(suma_ve);
       console.log(suma_dias);
@@ -1337,8 +1366,8 @@ export default {
 
 .wallet-card {
   padding: 20px;
-  margin: auto;
-  width: 50%;
+  margin: 20%;
+  width: auto;
 }
 
 .text-title {
@@ -1367,11 +1396,6 @@ export default {
   text-align: end;
   align-items: flex-end;
 }
-
-/* .switch-toggle {
-  position: fixed;
-  display: flex;
-} */
 
 .resultado {
   padding: 10px;
