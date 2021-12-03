@@ -1,6 +1,6 @@
 # [DISWALLET - Web Application](https://diswallet-sx62.web.app/)
 
-![DISWALLET](ss_diswallet.png)
+![DISWALLET](screenshot_diswallet.png)
 
 ## Project setup
 ```
