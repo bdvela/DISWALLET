@@ -215,84 +215,129 @@
               </template>
               <v-card class="results-dialog" rounded="xl" elevation="12">
                 <v-card-title class="justify-center">
-                  <span class="text-h2 text-center">RESULTADOS</span>
+                  <span class="text-title text-center">RESULTADOS</span>
                 </v-card-title>
                 <v-card-text class="justify-center">
-                  <table cellspacing="15">
-                    <tbody>
-                      <br />
-                      <tr style="height: 23px">
-                        <td style="height: 23px">
-                          Tasa Efectiva anual (Sin Costes):
-                        </td>
-                        <td class="resultado">
-                          <b> {{ newtcea.tea }}% </b>
-                        </td>
-                        <td style="height: 23px">Costes Iniciales Totales:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.ci }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">
-                          Número de días transcurridos:
-                        </td>
-                        <td class="resultado">
-                          <b>{{ newtcea.nd }}</b>
-                        </td>
-                        <td style="height: 23px">Valor Neto:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.vnet }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">
-                          Tasa Efectiva a {{ newtcea.nd }} días:
-                        </td>
-                        <td class="resultado">
-                          <b>{{ newtcea.te }}%</b>
-                        </td>
-                        <td style="height: 23px">Valor Total a Recibir:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.vr }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">
-                          Tasa Descontada a {{ newtcea.nd }} días:
-                        </td>
-                        <td class="resultado">
-                          <b>{{ newtcea.d }}%</b>
-                        </td>
-                        <td style="height: 23px">Costes Finales Totales:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.cf }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">Descuento por días:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea._d }}</b>
-                        </td>
-                        <td style="height: 23px">Valor Total a Entregar:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.ve }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">Retención:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.retencion }}</b>
-                        </td>
-                        <td style="height: 23px">
-                          <b>Tasa de Coste Efectivo Anual (TCEA): </b>
-                        </td>
-                        <td class="resultado">
-                          <span>{{ newtcea.tcea }}%</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-row class="flex-column">
+                        <v-col>
+                          <table cellspacing="15">
+                            <br />
+                            <tr>
+                              <td>
+                                <v-tooltip
+                                  left
+                                  color="rgba(0, 0, 0, 0.7)"
+                                  max-width="300px"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <div
+                                      v-bind="attrs"
+                                      v-on="on"
+                                      class="result-info"
+                                    >
+                                      Tasa Efectiva anual (Sin Costes):
+                                    </div></template
+                                  >
+                                  <span class="tooltip2"
+                                    >La TEA calcula el costo o valor de interés
+                                    esperado en un plazo de 360 o 365
+                                    días.</span
+                                  >
+                                </v-tooltip>
+                              </td>
+                              <td class="resultado">
+                                <b> {{ newtcea.tea }}% </b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="height: 23px">
+                                Número de días transcurridos:
+                              </td>
+
+                              <td class="resultado">
+                                <b>{{ newtcea.nd }}</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Tasa Efectiva a {{ newtcea.nd }} días:</td>
+                              <td class="resultado">
+                                <b>{{ newtcea.te }}%</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Tasa Descontada a {{ newtcea.nd }} días:</td>
+                              <td class="resultado">
+                                <b>{{ newtcea.d }}%</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Descuento por días:</td>
+                              <td class="resultado">
+                                <b>{{ newtcea._d }}</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Retención:</td>
+                              <td class="resultado">
+                                <b>{{ newtcea.retencion }}</b>
+                              </td>
+                            </tr>
+                          </table>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-row class="flex-column">
+                        <v-col>
+                          <table cellspacing="15">
+                            <tbody>
+                              <br />
+                              <tr>
+                                <td>Costes Iniciales Totales:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.ci }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Costes Finales Totales:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.cf }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Valor Total a Recibir:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.vr }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Valor Neto:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.vnet }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Valor Total a Entregar:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.ve }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <b>Tasa de Coste Efectivo Anual (TCEA): </b>
+                                </td>
+                                <td class="resultado">
+                                  <span>{{ newtcea.tcea }}%</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
                 </v-card-text>
                 <v-card-actions class="justify-center">
                   <v-btn
@@ -320,100 +365,130 @@
               </template>
               <v-card class="results-dialog" rounded="xl" elevation="12">
                 <v-card-title class="justify-center">
-                  <span class="text-h2">RESULTADOS</span>
+                  <span class="text-title text-center">RESULTADOS</span>
+                  <!--resultados POST -->
                 </v-card-title>
                 <v-card-text class="justify-center">
-                  <table cellspacing="15">
-                    <tbody>
-                      <br />
-                      <tr style="height: 23px">
-                        <td style="height: 23px">
-                          <v-tooltip
-                            left
-                            color="rgba(0, 0, 0, 0.7)"
-                            max-width="300px"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <div v-bind="attrs" v-on="on" class="result-info">
-                                Tasa Efectiva anual (Sin Costes):
-                              </div></template
-                            >
-                            <span class="tooltip2"
-                              >La TEA calcula el costo o valor de interés
-                              esperado en un plazo de 360 o 365 días.</span
-                            >
-                          </v-tooltip>
-                        </td>
-                        <td class="resultado">
-                          <b> {{ newtcea.tea }}% </b>
-                        </td>
+                  <v-row>
+                    <v-col cols="12" sm="6">
+                      <v-row class="flex-column">
+                        <v-col>
+                          <table cellspacing="15">
+                            <br />
+                            <tr>
+                              <td>
+                                <v-tooltip
+                                  left
+                                  color="rgba(0, 0, 0, 0.7)"
+                                  max-width="300px"
+                                >
+                                  <template v-slot:activator="{ on, attrs }">
+                                    <div
+                                      v-bind="attrs"
+                                      v-on="on"
+                                      class="result-info"
+                                    >
+                                      Tasa Efectiva anual (Sin Costes):
+                                    </div></template
+                                  >
+                                  <span class="tooltip2"
+                                    >La TEA calcula el costo o valor de interés
+                                    esperado en un plazo de 360 o 365
+                                    días.</span
+                                  >
+                                </v-tooltip>
+                              </td>
+                              <td class="resultado">
+                                <b> {{ newtcea.tea }}% </b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="height: 23px">
+                                Número de días transcurridos:
+                              </td>
 
-                        <td style="height: 23px">Costes Iniciales Totales:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.ci }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">
-                          Número de días transcurridos:
-                        </td>
-
-                        <td class="resultado">
-                          <b>{{ newtcea.nd }}</b>
-                        </td>
-                        <td style="height: 23px">Costes Finales Totales:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.cf }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">
-                          Tasa Efectiva a {{ newtcea.nd }} días:
-                        </td>
-                        <td class="resultado">
-                          <b>{{ newtcea.te }}%</b>
-                        </td>
-                        <td style="height: 23px">Valor Total a Recibir:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.vr }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">
-                          Tasa Descontada a {{ newtcea.nd }} días:
-                        </td>
-                        <td class="resultado">
-                          <b>{{ newtcea.d }}%</b>
-                        </td>
-                        <td style="height: 23px">Valor Neto:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.vnet }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">Descuento por días:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea._d }}</b>
-                        </td>
-                        <td style="height: 23px">Valor Total a Entregar:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.ve }}</b>
-                        </td>
-                      </tr>
-                      <tr style="height: 23px">
-                        <td style="height: 23px">Retención:</td>
-                        <td class="resultado">
-                          <b>{{ newtcea.retencion }}</b>
-                        </td>
-                        <td style="height: 23px">
-                          <b>Tasa de Coste Efectivo Anual (TCEA): </b>
-                        </td>
-                        <td class="resultado">
-                          <span>{{ newtcea.tcea }}%</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                              <td class="resultado">
+                                <b>{{ newtcea.nd }}</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Tasa Efectiva a {{ newtcea.nd }} días:</td>
+                              <td class="resultado">
+                                <b>{{ newtcea.te }}%</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Tasa Descontada a {{ newtcea.nd }} días:</td>
+                              <td class="resultado">
+                                <b>{{ newtcea.d }}%</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Descuento por días:</td>
+                              <td class="resultado">
+                                <b>{{ newtcea._d }}</b>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Retención:</td>
+                              <td class="resultado">
+                                <b>{{ newtcea.retencion }}</b>
+                              </td>
+                            </tr>
+                          </table>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-row class="flex-column">
+                        <v-col>
+                          <table cellspacing="15">
+                            <tbody>
+                              <br />
+                              <tr>
+                                <td>Costes Iniciales Totales:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.ci }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Costes Finales Totales:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.cf }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Valor Total a Recibir:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.vr }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Valor Neto:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.vnet }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Valor Total a Entregar:</td>
+                                <td class="resultado">
+                                  <b>{{ newtcea.ve }}</b>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <b>Tasa de Coste Efectivo Anual (TCEA): </b>
+                                </td>
+                                <td class="resultado">
+                                  <span>{{ newtcea.tcea }}%</span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
                 </v-card-text>
               </v-card>
             </v-dialog>
@@ -441,177 +516,185 @@
                   <v-form class="mt-12" @submit.prevent="showTCEA">
                     <v-container class="container-forms">
                       <v-row>
-                        <v-col class="col-register" cols="12" sm="4">
-                          <h3>Tasa y plazo</h3>
-                          <v-subheader>Días por año</v-subheader>
-                          <v-select
-                            :items="days"
-                            v-model="newtcea.dias"
-                            placeholder="días por año"
-                            autofocus
-                            filled
-                            rounded
-                            required
-                          ></v-select>
-                        </v-col>
-
-                        <v-col class="col-register" cols="12" sm="4">
-                          <h3>Costes / Gastos</h3>
-                          <v-subheader>Gastos iniciales </v-subheader>
-                          <v-select
-                            :items="gastos"
-                            v-model="newtcea.gastosIniciales"
-                            placeholder="motivo"
-                            filled
-                            rounded
-                          ></v-select>
-                        </v-col>
-
-                        <v-col class="col-register" cols="12" sm="4">
-                          <h3>Datos de la factura</h3>
-                          <v-subheader>Fecha de emisión</v-subheader>
-                          <v-text-field
-                            v-model="newtcea.emision"
-                            outlined
-                            disabled
-                            filled
-                            type="date"
-                            rounded
-                            required
-                          ></v-text-field>
-                        </v-col>
-
-                        <v-col class="col-register" cols="12" sm="4">
-                          <v-subheader>Plazo de tasa</v-subheader>
-                          <v-select
-                            :items="plazo"
-                            v-model="newtcea.plazo"
-                            placeholder="plazo de tasa"
-                            filled
-                            rounded
-                            required
-                          ></v-select>
-                        </v-col>
-
-                        <v-col class="col-register" cols="12" sm="4">
-                          <v-subheader>Valor total en efectivo</v-subheader>
-                          <v-text-field
-                            v-model="newtcea.valorEfectivoGI"
-                            placeholder="gastos iniciales"
-                            type="number"
-                            filled
-                            rounded
-                          ></v-text-field>
-                        </v-col>
-
-                        <v-col class="col-register" cols="12" sm="4">
-                          <v-subheader>Fecha de pago</v-subheader>
-                          <v-text-field
-                            v-model="newtcea.fechapago"
-                            outlined
-                            disabled
-                            filled
-                            type="date"
-                            rounded
-                            required
-                          ></v-text-field>
-                        </v-col>
-
-                        <v-col class="col-register" cols="12" sm="4">
-                          <v-subheader>Tasa</v-subheader>
-                          <v-row class="formtasa">
-                            <v-col class="col-register" cols="12" sm="6"
-                              ><v-radio-group v-model="newtcea.tipotasa">
-                                <v-radio
-                                  label="Efectiva"
-                                  value="Efectiva"
-                                ></v-radio>
-                                <v-radio
-                                  label="Nominal"
-                                  value="Nominal"
-                                ></v-radio>
-                              </v-radio-group>
+                        <v-col cols="12" sm="4">
+                          <v-row class="flex-column">
+                            <v-col class="col-register">
+                              <h3>Tasa y plazo</h3>
+                              <v-subheader>Días por año</v-subheader>
+                              <v-select
+                                :items="days"
+                                v-model="newtcea.dias"
+                                placeholder="días por año"
+                                autofocus
+                                filled
+                                rounded
+                                required
+                              ></v-select>
                             </v-col>
-                            <v-col class="col-register" cols="12" sm="6">
+
+                            <v-col class="col-register">
+                              <v-subheader>Plazo de tasa</v-subheader>
+                              <v-select
+                                :items="plazo"
+                                v-model="newtcea.plazo"
+                                placeholder="plazo de tasa"
+                                filled
+                                rounded
+                                required
+                              ></v-select>
+                            </v-col>
+
+                            <v-col class="col-register">
+                              <v-subheader>Tasa</v-subheader>
+                              <v-row class="formtasa">
+                                <v-col class="col-register" cols="12" sm="6"
+                                  ><v-radio-group v-model="newtcea.tipotasa">
+                                    <v-radio
+                                      label="Efectiva"
+                                      value="Efectiva"
+                                    ></v-radio>
+                                    <v-radio
+                                      label="Nominal"
+                                      value="Nominal"
+                                    ></v-radio>
+                                  </v-radio-group>
+                                </v-col>
+                                <v-col class="col-register" cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="newtcea.tasa"
+                                    type="number"
+                                    placeholder="(%)"
+                                    filled
+                                    rounded
+                                  ></v-text-field>
+                                </v-col>
+                                <v-col>
+                                  <div v-if="newtcea.tipotasa == 'Nominal'">
+                                    <v-subheader
+                                      >Periodo de Capitalización</v-subheader
+                                    >
+                                    <v-select
+                                      :items="capitalizacion"
+                                      v-model="newtcea.capitalizacion"
+                                      placeholder="per. de capitalización"
+                                      filled
+                                      rounded
+                                      required
+                                    ></v-select>
+                                  </div>
+                                </v-col>
+                              </v-row>
+                            </v-col>
+
+                            <v-col class="col-register">
+                              <v-subheader>Fecha de descuento</v-subheader>
                               <v-text-field
-                                v-model="newtcea.tasa"
-                                type="number"
-                                placeholder="(%)"
+                                v-model="newtcea.fechaDescuento"
+                                placeholder="dd/mm/aaaa"
+                                type="date"
                                 filled
                                 rounded
                               ></v-text-field>
                             </v-col>
-                            <v-col>
-                              <div v-if="newtcea.tipotasa == 'Nominal'">
-                                <v-subheader
-                                  >Periodo de Capitalización</v-subheader
-                                >
-                                <v-select
-                                  :items="capitalizacion"
-                                  v-model="newtcea.capitalizacion"
-                                  placeholder="per. de capitalización"
-                                  filled
-                                  rounded
-                                  required
-                                ></v-select>
-                              </div>
+                          </v-row>
+                        </v-col>
+                        <v-col cols="12" sm="4">
+                          <v-row class="flex-column">
+                            <v-col class="col-register">
+                              <h3>Costes / Gastos</h3>
+                              <v-subheader>Gastos iniciales </v-subheader>
+                              <v-select
+                                :items="gastos"
+                                v-model="newtcea.gastosIniciales"
+                                placeholder="motivo"
+                                filled
+                                rounded
+                              ></v-select>
+                            </v-col>
+
+                            <v-col class="col-register">
+                              <v-subheader>Valor total en efectivo</v-subheader>
+                              <v-text-field
+                                v-model="newtcea.valorEfectivoGI"
+                                placeholder="gastos iniciales"
+                                type="number"
+                                filled
+                                rounded
+                              ></v-text-field>
+                            </v-col>
+                            <v-col class="col-register">
+                              <v-divider></v-divider>
+                              <v-subheader>Gastos finales</v-subheader>
+                              <v-select
+                                :items="gastos"
+                                v-model="newtcea.gastosFinales"
+                                placeholder="motivo"
+                                filled
+                                rounded
+                              ></v-select>
+                            </v-col>
+                            <v-col class="col-register">
+                              <v-subheader>Valor total en efectivo</v-subheader>
+                              <v-text-field
+                                v-model="newtcea.valorEfectivoGF"
+                                placeholder="gastos finales"
+                                type="number"
+                                filled
+                                rounded
+                              ></v-text-field>
                             </v-col>
                           </v-row>
                         </v-col>
-                        <v-col class="col-register" cols="12" sm="4">
-                          <v-divider></v-divider>
-                          <v-subheader>Gastos finales</v-subheader>
-                          <v-select
-                            :items="gastos"
-                            v-model="newtcea.gastosFinales"
-                            placeholder="motivo"
-                            filled
-                            rounded
-                          ></v-select>
-                        </v-col>
-
-                        <v-col class="col-register" cols="12" sm="4">
-                          <v-subheader>Total facturado</v-subheader>
-                          <v-text-field
-                            v-model="newtcea.monto"
-                            outlined
-                            disabled
-                            filled
-                            rounded
-                            required
-                          ></v-text-field>
-                        </v-col>
-
-                        <v-col class="col-register" cols="12" sm="4">
-                          <v-subheader>Fecha de descuento</v-subheader>
-                          <v-text-field
-                            v-model="newtcea.fechaDescuento"
-                            placeholder="dd/mm/aaaa"
-                            type="date"
-                            filled
-                            rounded
-                          ></v-text-field>
-                        </v-col>
-                        <v-col class="col-register" cols="12" sm="4">
-                          <v-subheader>Valor total en efectivo</v-subheader>
-                          <v-text-field
-                            v-model="newtcea.valorEfectivoGF"
-                            placeholder="gastos finales"
-                            type="number"
-                            filled
-                            rounded
-                          ></v-text-field>
-                        </v-col>
-                        <v-col class="col-register" cols="12" sm="4">
-                          <v-subheader>Retención</v-subheader>
-                          <v-text-field
-                            v-model="newtcea.retencion"
-                            outlined
-                            disabled
-                            filled
-                            rounded
-                            required
-                          ></v-text-field>
+                        <v-col cols="12" sm="4">
+                          <v-row class="flex-column">
+                            <v-col class="col-register">
+                              <h3>Datos de la factura</h3>
+                              <v-subheader>Fecha de emisión</v-subheader>
+                              <v-text-field
+                                v-model="newtcea.emision"
+                                outlined
+                                disabled
+                                filled
+                                type="date"
+                                rounded
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col class="col-register">
+                              <v-subheader>Fecha de pago</v-subheader>
+                              <v-text-field
+                                v-model="newtcea.fechapago"
+                                outlined
+                                disabled
+                                filled
+                                type="date"
+                                rounded
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col class="col-register">
+                              <v-subheader>Total facturado</v-subheader>
+                              <v-text-field
+                                v-model="newtcea.monto"
+                                outlined
+                                disabled
+                                filled
+                                rounded
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col class="col-register">
+                              <v-subheader>Retención</v-subheader>
+                              <v-text-field
+                                v-model="newtcea.retencion"
+                                outlined
+                                disabled
+                                filled
+                                rounded
+                                required
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
                         </v-col>
                       </v-row>
                       <div class="text-center mt-2">
@@ -1247,6 +1330,9 @@ export default {
   padding: 20px;
   margin: 5%;
   margin-top: -100px;
+}
+.rows {
+  background-color: red;
 }
 
 .wallet-card {
