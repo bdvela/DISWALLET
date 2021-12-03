@@ -1,4 +1,4 @@
-# [DISWALLET - Tu aliado en las finanzas](https://diswallet-sx62.web.app/)
+# [DISWALLET - Web Application](https://diswallet-sx62.web.app/)
 
 
 ## Project setup
