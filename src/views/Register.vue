@@ -24,22 +24,22 @@
                     <v-col cols="12" sm="6" class="col-register">
                       <v-subheader>RUC</v-subheader>
                       <v-text-field
-                        v-model="ruc"
+                        v-model="newUser.ruc"
                         filled
                         rounded
                         autofocus
                         placeholder="RUC"
-                        type="text"
+                        type="number"
                         color="primary accent-3"
                       />
                     </v-col>
                     <v-col cols="12" sm="6" class="col-register">
-                      <v-subheader>Nombre y Apellido</v-subheader>
+                      <v-subheader>Nombre</v-subheader>
                       <v-text-field
-                        v-model="nombres"
+                        v-model="newUser.nombres"
                         filled
                         rounded
-                        placeholder="nombre y apellido"
+                        placeholder="nombre"
                         type="text"
                         color="primary accent-3"
                       />
@@ -47,7 +47,7 @@
                     <v-col cols="12" sm="6" class="col-register">
                       <v-subheader>Email</v-subheader>
                       <v-text-field
-                        v-model="email"
+                        v-model="newUser.email"
                         filled
                         rounded
                         placeholder="email"
@@ -58,18 +58,18 @@
                     <v-col cols="12" sm="6" class="col-register">
                       <v-subheader>Celular</v-subheader>
                       <v-text-field
-                        v-model="celular"
+                        v-model="newUser.celular"
                         filled
                         rounded
                         placeholder="celular"
-                        type="phonenumber"
+                        type="number"
                         color="primary accent-3"
                       />
                     </v-col>
                     <v-col cols="12" sm="6" class="col-register">
                       <v-subheader>Contraseña</v-subheader>
                       <v-text-field
-                        v-model="contraseña"
+                        v-model="newUser.contraseña"
                         filled
                         rounded
                         id="password1"
@@ -99,44 +99,57 @@
 import '../firebase/init';
 import firebase from 'firebase/compat/app';
 
+let db = firebase.database();
+let usersRef = db.ref('users');
+
 export default {
+  name: 'Register',
+  firebase: {
+    users: usersRef,
+  },
   data() {
     return {
-      ruc: '',
-      nombres: '',
-      email: '',
-      celular: '',
-      contraseña: '',
+      newUser: {
+        ruc: '',
+        nombres: '',
+        email: '',
+        celular: '',
+        contraseña: '',
+      },
       error: '',
     };
   },
-  name: 'Register',
   methods: {
     register() {
       this.error = '';
       if (
-        this.ruc &&
-        this.nombres &&
-        this.email &&
-        this.celular &&
-        this.contraseña
+        this.newUser.ruc &&
+        this.newUser.nombres &&
+        this.newUser.email &&
+        this.newUser.celular &&
+        this.newUser.contraseña
       ) {
         firebase
           .auth()
-          .createUserWithEmailAndPassword(this.email, this.contraseña)
+          .createUserWithEmailAndPassword(
+            this.newUser.email,
+            this.newUser.contraseña
+          )
           .then((user) => {
             //Actualizar usuario
             if (user) {
               user.user
                 .updateProfile({
-                  displayName: this.nombres,
+                  displayName: this.newUser.nombres,
+                  email: this.newUser.email,
                 })
                 .then(() => {
-                  this.ruc = '';
-                  this.nombres = '';
-                  this.email = '';
-                  this.celular = '';
-                  this.contraseña = '';
+                  usersRef.push(this.newUser);
+                  this.newUser.ruc = '';
+                  this.newUser.nombres = '';
+                  this.newUser.email = '';
+                  this.newUser.celular = '';
+                  this.newUser.contraseña = '';
                   this.$router.push({ name: 'SuccessRegister' });
                 })
                 .catch((err) => {

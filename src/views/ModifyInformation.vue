@@ -17,58 +17,24 @@
             </v-card-title>
             <v-card-subtitle>
               <br />
-              <p class="text-h4">
-                {{ user.displayName }}
-                <v-btn
-                  class="icon-edit"
-                  elevation="0"
-                  plain
-                  color="primary"
-                  small
-                  fab
-                  to="./ModifyInformation"
-                >
-                  <v-icon>mdi-account-edit</v-icon></v-btn
-                >
-              </p>
+              <p class="text-h4">Mi nombre</p>
             </v-card-subtitle>
             <v-card-text>
-              <v-form class="mt-6" @submit.prevent="register">
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" class="col-register">
-                      <h2>RUC</h2>
-                      <br />
-                      <p>{{ ruc }}</p>
-                    </v-col>
-                    <v-col cols="12" sm="6" class="col-register">
-                      <h2>Nombre</h2>
-                      <br />
-                      <p>{{ user.displayName }}</p>
-                    </v-col>
-                    <v-col cols="12" sm="6" class="col-register">
-                      <br />
-                      <h2>Email</h2>
-                      <br />
-                      <p>{{ user.email }}</p>
-                    </v-col>
-                    <v-col cols="12" sm="6" class="col-register">
-                      <br />
-                      <h2>Celular</h2>
-                      <br />
-                      <p>{{ celular }}</p>
-                    </v-col>
-                  </v-row>
+              <v-form class="mt-6" @submit.prevent="editUser">
+                <v-container class="inputname">
+                  <v-subheader>Nombre</v-subheader>
+                  <v-text-field
+                    v-model="userEdited.nombres"
+                    filled
+                    rounded
+                    :placeholder="user.displayName"
+                    type="text"
+                    color="primary accent-3"
+                  />
 
                   <div class="text-center mt-12">
-                    <v-btn
-                      rounded
-                      x-large
-                      outlined
-                      color="primary"
-                      type="submit"
-                      to="./ChangePassword"
-                      >Cambiar contraseña</v-btn
+                    <v-btn rounded x-large color="primary" type="submit"
+                      >Guardar cambios</v-btn
                     >
                   </div>
                 </v-container>
@@ -89,15 +55,28 @@ import firebase from 'firebase/compat/app';
 let db = firebase.database();
 let usersRef = db.ref('users');
 export default {
-  name: 'MyAccount',
+  name: 'ModifyInformation',
   firebase: {
     users: usersRef,
   },
-  data: () => ({
-    user: null,
-    ruc: '',
-    celular: '',
-  }),
+  data() {
+    return {
+      error: '',
+      user: null,
+      ruc: '',
+      celular: '',
+      userEdited: {
+        ruc: '',
+        nombres: '',
+        email: '',
+        celular: '',
+      },
+      oldruc: 0,
+      oldnombres: '',
+      oldemail: '',
+      oldcelular: '',
+    };
+  },
   components: {
     Navbar,
   },
@@ -120,6 +99,21 @@ export default {
       }
     });
   },
+  methods: {
+    editUser() {
+      let user = firebase.auth().currentUser;
+      if (this.userEdited.nombres == '') {
+        this.userEdited.nombres = this.oldnombres;
+      }
+      if (this.userEdited.email == '') {
+        this.userEdited.email = this.oldemail;
+      }
+      user.updateProfile({
+        displayName: this.userEdited.nombres,
+      });
+      this.$router.push({ name: 'MyAccount' });
+    },
+  },
 };
 </script>
 
@@ -132,11 +126,11 @@ export default {
   padding: 5%;
 }
 
-.icon-edit {
-  position: absolute;
-}
 .col-register {
   padding-block: 0px;
+}
+.inputname {
+  width: 50%;
 }
 
 .inputPrice input[type='number'] {
