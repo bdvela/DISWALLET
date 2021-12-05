@@ -21,7 +21,12 @@ export default {
 <style>
 #app {
   color: #7146ed;
-  background-color: rgb(249, 249, 249);
+  background: rgb(255, 255, 255);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(242, 244, 246, 0.9948354341736695) 38%
+  );
 }
 
 span {
