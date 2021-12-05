@@ -65,6 +65,9 @@
         </v-hover>
       </v-col>
     </v-row>
+    <p class="copy">
+      <a href="https://github.com/bdvela">a project by bdvela</a>
+    </p>
   </v-app>
 </template>
 
@@ -103,10 +106,18 @@ export default {
 </script>
 
 <style scoped>
+* {
+  text-decoration: none;
+}
 .iniciofoto {
   position: fixed;
   left: 0px;
   top: 0px;
+}
+.copy {
+  color: black;
+  text-align: end;
+  align-items: flex-end;
 }
 .prueba {
   background-color: red;
